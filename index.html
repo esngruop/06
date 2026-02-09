@@ -3,842 +3,1341 @@
  <head> 
   <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>CyberShield - Cybersecurity Insights</title> 
-  <link rel="preconnect" href="https://fonts.googleapis.com"> 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"> 
+  <title>Ehsan Mohammadi | Technology Research Articles 2026</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Playfair+Display:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
   <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES & RESET
+           ============================================ */
         :root {
-            --bg-primary: #0a0e1a;
-            --bg-secondary: #111827;
-            --bg-card: #1a2236;
-            --accent-cyan: #06d6a0;
-            --accent-blue: #118ab2;
-            --accent-purple: #7b2ff7;
-            --accent-pink: #ef476f;
-            --accent-orange: #f78c6b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(6, 214, 160, 0.15);
-            --glow-cyan: rgba(6, 214, 160, 0.3);
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: rgba(255,255,255,0.03);
+            --glass-bg: rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.08);
+            --glass-hover: rgba(255,255,255,0.08);
+            --accent-1: #6c5ce7;
+            --accent-2: #a29bfe;
+            --accent-3: #00cec9;
+            --accent-4: #fd79a8;
+            --accent-5: #fdcb6e;
+            --accent-6: #55efc4;
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6c6c80;
+            --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            --gradient-2: linear-gradient(135deg, #00cec9, #55efc4);
+            --gradient-3: linear-gradient(135deg, #fd79a8, #e17055);
+            --gradient-4: linear-gradient(135deg, #fdcb6e, #e17055);
+            --gradient-5: linear-gradient(135deg, #0984e3, #6c5ce7);
+            --gradient-6: linear-gradient(135deg, #00b894, #00cec9);
+            --shadow-glow: 0 0 40px rgba(108,92,231,0.15);
+            --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
         }
 
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
-            overflow-x: hidden;
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-1) transparent;
         }
 
-        /* Animated background particles */
-        .bg-particles {
+        html::-webkit-scrollbar { width: 6px; }
+        html::-webkit-scrollbar-track { background: transparent; }
+        html::-webkit-scrollbar-thumb { background: var(--accent-1); border-radius: 3px; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           CANVAS PARTICLES BACKGROUND
+           ============================================ */
+        #particles-canvas {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            pointer-events: none;
             z-index: 0;
-            overflow: hidden;
+            pointer-events: none;
         }
 
-        .bg-particles::before,
-        .bg-particles::after {
-            content: '';
-            position: absolute;
+        /* ============================================
+           FLOATING 3D ORBS
+           ============================================ */
+        .orb {
+            position: fixed;
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.12;
-            animation: floatBlob 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 20s ease-in-out infinite;
         }
+        .orb-1 { width: 500px; height: 500px; background: var(--accent-1); top: -10%; left: -10%; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: var(--accent-3); top: 40%; right: -5%; animation-delay: -7s; }
+        .orb-3 { width: 350px; height: 350px; background: var(--accent-4); bottom: -5%; left: 30%; animation-delay: -14s; }
+        .orb-4 { width: 300px; height: 300px; background: var(--accent-5); top: 20%; left: 50%; animation-delay: -3s; }
 
-        .bg-particles::before {
-            width: 600px; height: 600px;
-            background: var(--accent-purple);
-            top: -200px; left: -100px;
-        }
-
-        .bg-particles::after {
-            width: 500px; height: 500px;
-            background: var(--accent-cyan);
-            bottom: -150px; right: -100px;
-            animation-delay: -10s;
-        }
-
-        @keyframes floatBlob {
+        @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(100px, 50px) scale(1.1); }
-            50% { transform: translate(-50px, 100px) scale(0.9); }
-            75% { transform: translate(80px, -30px) scale(1.05); }
+            25% { transform: translate(40px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 40px) scale(0.95); }
+            75% { transform: translate(30px, 20px) scale(1.02); }
         }
 
-        /* Navigation */
-        nav {
+        /* ============================================
+           LOADING SCREEN
+           ============================================ */
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-primary);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-ring {
+            width: 70px; height: 70px;
+            border: 3px solid rgba(108,92,231,0.15);
+            border-top-color: var(--accent-1);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .loader-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .navbar {
             position: fixed;
             top: 0; left: 0; right: 0;
-            z-index: 100;
-            background: rgba(10, 14, 26, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 40px;
-            transition: all 0.3s;
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
+            z-index: 1000;
+            padding: 16px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 70px;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: rgba(10,10,15,0.7);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
         }
-
-        .logo {
+        .navbar.scrolled {
+            padding: 10px 40px;
+            background: rgba(10,10,15,0.92);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .nav-brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1.5em;
-            color: var(--accent-cyan);
+            gap: 12px;
             text-decoration: none;
         }
-
-        .logo i { font-size: 1.3em; }
-
+        .nav-logo {
+            width: 42px; height: 42px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+            transform: rotate(-5deg);
+            transition: transform 0.3s ease;
+        }
+        .nav-brand:hover .nav-logo { transform: rotate(0deg) scale(1.05); }
+        .nav-brand-text {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+        .nav-brand-text span { color: var(--accent-2); }
         .nav-links {
             display: flex;
-            gap: 30px;
+            align-items: center;
+            gap: 8px;
             list-style: none;
         }
-
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.88rem;
             font-weight: 500;
-            transition: color 0.3s;
-            font-size: 0.95em;
+            padding: 8px 18px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
         }
-
-        .nav-links a:hover { color: var(--accent-cyan); }
-
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: var(--glass-hover);
+        }
+        .nav-links a.active {
+            color: white;
+            background: var(--gradient-1);
+        }
         .nav-cta {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            color: #000 !important;
-            padding: 8px 20px;
-            border-radius: 25px;
+            padding: 10px 24px !important;
+            background: var(--gradient-1) !important;
+            color: white !important;
+            border-radius: 12px !important;
             font-weight: 600 !important;
         }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            z-index: 1;
-            padding: 140px 40px 80px;
-            text-align: center;
-            max-width: 900px;
-            margin: 0 auto;
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            cursor: pointer;
         }
 
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 120px 40px 80px;
+            perspective: 1000px;
+        }
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(6, 214, 160, 0.1);
-            border: 1px solid rgba(6, 214, 160, 0.3);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            color: var(--accent-cyan);
-            margin-bottom: 25px;
+            padding: 8px 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--accent-2);
+            margin-bottom: 28px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
-
-        .hero-badge .dot {
+        .hero-badge i { font-size: 0.7rem; }
+        .hero-badge .pulse-dot {
             width: 8px; height: 8px;
-            background: var(--accent-cyan);
+            background: var(--accent-6);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            animation: pulse 2s ease infinite;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 0.5; transform: scale(1.5); }
         }
-
-        .hero h1 {
-            font-size: clamp(2.5em, 5vw, 3.8em);
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
             font-weight: 900;
-            line-height: 1.15;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            line-height: 1.08;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+        .hero-title .gradient-text {
+            background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .hero p {
-            font-size: 1.15em;
-            color: var(--text-secondary);
-            max-width: 650px;
-            margin: 0 auto 35px;
+        .hero-title .line2 {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 640px;
+            margin: 0 auto 40px;
+            line-height: 1.75;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
         .hero-stats {
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
+            gap: 48px;
+            margin-bottom: 48px;
+            animation: fadeInUp 0.8s ease 0.8s both;
         }
-
-        .stat-item {
+        .hero-stat {
             text-align: center;
         }
-
-        .stat-number {
-            font-size: 2em;
+        .hero-stat-number {
+            font-size: 2.2rem;
             font-weight: 800;
-            color: var(--accent-cyan);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-
-        .stat-label {
-            font-size: 0.85em;
-            color: var(--text-secondary);
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             margin-top: 4px;
         }
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            animation: fadeInUp 0.8s ease 1s both;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 25px rgba(108,92,231,0.35);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(108,92,231,0.5);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+        .btn-outline:hover {
+            background: var(--glass-hover);
+            transform: translateY(-3px);
+            border-color: var(--accent-2);
+        }
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: fadeInUp 0.8s ease 1.2s both;
+        }
+        .scroll-mouse {
+            width: 26px; height: 40px;
+            border: 2px solid var(--glass-border);
+            border-radius: 13px;
+            position: relative;
+        }
+        .scroll-mouse::after {
+            content: '';
+            position: absolute;
+            top: 8px; left: 50%;
+            transform: translateX(-50%);
+            width: 3px; height: 8px;
+            background: var(--accent-2);
+            border-radius: 2px;
+            animation: scrollWheel 2s ease infinite;
+        }
+        @keyframes scrollWheel {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(12px); }
+        }
+        .scroll-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-        /* Section Title */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================
+           3D TILT CARD EFFECT
+           ============================================ */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+        }
+
+        /* ============================================
+           SECTION STYLES
+           ============================================ */
+        .section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 2;
+        }
         .section-header {
             text-align: center;
-            padding: 60px 40px 40px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 70px;
         }
-
-        .section-header h2 {
-            font-size: 2.2em;
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--accent-3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3.2rem);
             font-weight: 800;
-            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
         }
-
-        .section-header p {
+        .section-desc {
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            font-size: 1.05em;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Articles Grid */
-        .articles-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px 60px;
-            position: relative;
-            z-index: 1;
-        }
-
+        /* ============================================
+           ARTICLES GRID
+           ============================================ */
         .articles-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 32px;
+            max-width: 1320px;
+            margin: 0 auto;
         }
 
         .article-card {
             background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
             cursor: pointer;
         }
-
+        .article-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(108,92,231,0.3), transparent, rgba(0,206,201,0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .article-card:hover::before { opacity: 1; }
         .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(6, 214, 160, 0.1);
-            border-color: rgba(6, 214, 160, 0.4);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: var(--shadow-glow);
+            border-color: rgba(108,92,231,0.2);
         }
 
-        .card-image {
+        .card-visual {
             height: 200px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s;
-        }
-
-        .article-card:hover .card-image img {
-            transform: scale(1.05);
-        }
-
-        .card-tag {
+        .card-visual-bg {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.75em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            inset: 0;
+            opacity: 0.15;
         }
-
-        .tag-threat { background: rgba(239, 71, 111, 0.9); color: #fff; }
-        .tag-defense { background: rgba(6, 214, 160, 0.9); color: #000; }
-        .tag-research { background: rgba(123, 47, 247, 0.9); color: #fff; }
-        .tag-tutorial { background: rgba(17, 138, 178, 0.9); color: #fff; }
-        .tag-news { background: rgba(247, 140, 107, 0.9); color: #000; }
+        .card-visual-icon {
+            font-size: 3.5rem;
+            position: relative;
+            z-index: 2;
+            width: 90px; height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s ease;
+        }
+        .article-card:hover .card-visual-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
 
         .card-body {
-            padding: 20px;
+            padding: 28px 28px 24px;
         }
-
         .card-meta {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 12px;
-            font-size: 0.8em;
-            color: var(--text-secondary);
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
         }
-
-        .card-meta i {
-            margin-right: 4px;
-            color: var(--accent-cyan);
-        }
-
-        .card-body h3 {
-            font-size: 1.15em;
+        .card-category {
+            font-size: 0.72rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: rgba(108,92,231,0.15);
+            color: var(--accent-2);
+        }
+        .card-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .card-read-time {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
             transition: color 0.3s;
         }
-
-        .article-card:hover .card-body h3 { color: var(--accent-cyan); }
-
-        .card-body p {
-            font-size: 0.9em;
+        .article-card:hover .card-title { color: var(--accent-2); }
+        .card-excerpt {
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
-
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .card-tag {
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-weight: 500;
+        }
         .card-footer {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
+            padding-top: 18px;
+            border-top: 1px solid var(--glass-border);
         }
-
-        .author {
+        .card-author {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
-        .author-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        .card-author-avatar {
+            width: 32px; height: 32px;
+            border-radius: 10px;
+            background: var(--gradient-1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75em;
             font-weight: 700;
-            color: #fff;
+            font-size: 0.75rem;
+            color: white;
         }
-
-        .author-name {
-            font-size: 0.85em;
+        .card-author-name {
+            font-size: 0.82rem;
             font-weight: 600;
         }
-
-        .read-more {
-            font-size: 0.85em;
-            color: var(--accent-cyan);
+        .card-read-more {
+            font-size: 0.82rem;
             font-weight: 600;
+            color: var(--accent-2);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: gap 0.3s;
         }
+        .article-card:hover .card-read-more { gap: 10px; }
 
-        .article-card:hover .read-more { gap: 10px; }
-
-        /* Featured Article */
-        .featured-article {
-            max-width: 1200px;
-            margin: 0 auto 40px;
-            padding: 0 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .featured-card {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            transition: box-shadow 0.3s;
-        }
-
-        .featured-card:hover {
-            box-shadow: 0 25px 60px rgba(6, 214, 160, 0.1);
-        }
-
-        .featured-image {
-            position: relative;
-            min-height: 350px;
-        }
-
-        .featured-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .featured-content {
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .featured-tag {
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 15px;
-            font-size: 0.75em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 15px;
-            width: fit-content;
-        }
-
-        .featured-content h3 {
-            font-size: 1.6em;
-            font-weight: 800;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .featured-content p {
-            color: var(--text-secondary);
-            font-size: 1em;
-            margin-bottom: 25px;
-        }
-
-        /* Newsletter */
-        .newsletter {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .newsletter-box {
-            background: linear-gradient(135deg, rgba(6, 214, 160, 0.1), rgba(123, 47, 247, 0.1));
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 50px;
-            text-align: center;
-        }
-
-        .newsletter-box h3 {
-            font-size: 1.8em;
-            margin-bottom: 12px;
-        }
-
-        .newsletter-box p {
-            color: var(--text-secondary);
-            margin-bottom: 25px;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 12px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .newsletter-form input {
-            flex: 1;
-            padding: 14px 20px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 0.95em;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .newsletter-form input:focus {
-            border-color: var(--accent-cyan);
-        }
-
-        .newsletter-form button {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-            border: none;
-            border-radius: 12px;
-            color: #000;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            white-space: nowrap;
-        }
-
-        .newsletter-form button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--glow-cyan);
-        }
-
-        /* Footer */
-        footer {
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid var(--border-color);
-            padding: 40px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 15px;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover { color: var(--accent-cyan); }
-
-        /* Loading Indicator */
-        .page-loader {
+        /* ============================================
+           ARTICLE MODAL / EXPANDED VIEW
+           ============================================ */
+        .modal-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--bg-primary);
-            z-index: 9999;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            z-index: 5000;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 20px;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .page-loader.hidden {
             opacity: 0;
             visibility: hidden;
+            transition: all 0.4s ease;
+            padding: 40px;
         }
-
-        .loader-ring {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--accent-cyan);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .loader-text {
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            max-width: 860px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-1) transparent;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+        .modal-content::-webkit-scrollbar { width: 4px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--accent-1); border-radius: 2px; }
+        .modal-header {
+            padding: 40px 48px 0;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             color: var(--text-secondary);
-            font-size: 0.9em;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .modal-close:hover {
+            background: var(--glass-hover);
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+        .modal-category {
+            display: inline-flex;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+        .modal-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+        }
+        .modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .modal-meta-item i { color: var(--accent-2); }
+        .modal-body {
+            padding: 32px 48px 48px;
+        }
+        .modal-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 32px 0 16px;
+            color: var(--text-primary);
+        }
+        .modal-body h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--accent-2);
+        }
+        .modal-body p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            margin-bottom: 16px;
+        }
+        .modal-body ul, .modal-body ol {
+            margin: 12px 0 16px 24px;
+        }
+        .modal-body li {
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 6px;
+        }
+        .modal-body code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            background: var(--glass-bg);
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--glass-border);
+            color: var(--accent-3);
+        }
+        .modal-body .code-block {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--accent-3);
+            overflow-x: auto;
+        }
+        .modal-body blockquote {
+            border-left: 3px solid var(--accent-1);
+            padding: 12px 20px;
+            margin: 16px 0;
+            background: var(--glass-bg);
+            border-radius: 0 12px 12px 0;
+        }
+        .modal-body blockquote p {
+            color: var(--accent-2);
+            font-style: italic;
+            margin: 0;
+        }
+        .modal-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--glass-border);
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav { padding: 0 20px; }
-            .nav-links { display: none; }
-            .hero { padding: 120px 20px 60px; }
-            .hero-stats { gap: 25px; flex-wrap: wrap; }
-            .stat-number { font-size: 1.5em; }
-            .articles-container, .featured-article, .newsletter { padding-left: 20px; padding-right: 20px; }
-            .articles-grid { grid-template-columns: 1fr; }
-            .featured-card { grid-template-columns: 1fr; }
-            .featured-image { min-height: 200px; }
-            .featured-content { padding: 25px; }
-            .newsletter-box { padding: 30px 20px; }
-            .newsletter-form { flex-direction: column; }
+        /* ============================================
+           TECH STACK / OVERVIEW SECTION
+           ============================================ */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1320px;
+            margin: 0 auto;
+        }
+        .overview-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .overview-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            border-radius: 0 0 3px 3px;
+            transition: height 0.3s ease;
+        }
+        .overview-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(108,92,231,0.3);
+            box-shadow: var(--shadow-glow);
+        }
+        .overview-item:nth-child(1)::after { background: var(--gradient-1); }
+        .overview-item:nth-child(2)::after { background: var(--gradient-2); }
+        .overview-item:nth-child(3)::after { background: var(--gradient-3); }
+        .overview-item:nth-child(4)::after { background: var(--gradient-4); }
+        .overview-icon {
+            width: 54px; height: 54px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+        .overview-item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .overview-item-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
         }
 
-        /* Scroll Animation */
-        .fade-up {
+        /* ============================================
+           TIMELINE / TABLE OF CONTENTS
+           ============================================ */
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-1), var(--accent-3), var(--accent-4));
+            opacity: 0.3;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 36px;
+            position: relative;
+        }
+        .timeline-dot {
+            width: 50px; height: 50px;
+            min-width: 50px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.1);
+        }
+        .timeline-card {
+            flex: 1;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .timeline-card:hover {
+            border-color: rgba(108,92,231,0.3);
+            background: var(--glass-hover);
+        }
+        .timeline-card-title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+        .timeline-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           AUTHOR SECTION
+           ============================================ */
+        .author-section {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 48px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .author-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 300px; height: 300px;
+            background: var(--accent-1);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.08;
+        }
+        .author-avatar {
+            width: 140px; height: 140px;
+            min-width: 140px;
+            border-radius: 28px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+        }
+        .author-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 32px;
+            background: var(--gradient-1);
+            z-index: -1;
+            opacity: 0.4;
+            filter: blur(12px);
+        }
+        .author-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .author-info .author-role {
+            font-size: 0.9rem;
+            color: var(--accent-2);
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+        .author-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+        .author-links {
+            display: flex;
+            gap: 10px;
+        }
+        .author-link {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .author-link:hover {
+            background: var(--gradient-1);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 60px 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .footer-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .footer-logo {
+            width: 36px; height: 36px;
+            background: var(--gradient-1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: white;
+        }
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .footer-right {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer-right i { color: var(--accent-4); }
+
+        /* ============================================
+           ANIMATIONS / INTERSECTION OBSERVER
+           ============================================ */
+        .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
-
-        .fade-up.visible {
+        .reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+        .reveal-delay-6 { transition-delay: 0.6s; }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 20px; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(10,10,15,0.95);
+                flex-direction: column;
+                padding: 20px;
+                border-bottom: 1px solid var(--glass-border);
+            }
+            .nav-links.open { display: flex; }
+            .mobile-toggle { display: block; }
+            .hero { padding: 100px 20px 60px; }
+            .hero-stats { gap: 24px; }
+            .hero-stat-number { font-size: 1.6rem; }
+            .hero-actions { flex-direction: column; }
+            .section { padding: 60px 20px; }
+            .articles-grid { grid-template-columns: 1fr; }
+            .author-section { flex-direction: column; text-align: center; padding: 32px; }
+            .author-links { justify-content: center; }
+            .modal-overlay { padding: 16px; }
+            .modal-header { padding: 28px 24px 0; }
+            .modal-body { padding: 24px 24px 32px; }
+            .modal-title { font-size: 1.5rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
     </style> 
  </head> 
- <body> <!-- Page Loader --> 
-  <div class="page-loader" id="pageLoader"> 
+ <body> <!-- LOADING SCREEN --> 
+  <div class="loader-screen" id="loader"> 
    <div class="loader-ring"></div> 
    <div class="loader-text">
-     Loading CyberShield... 
+    Initializing Research Hub
    </div> 
-  </div> <!-- Background --> 
-  <div class="bg-particles"></div> <!-- Navigation --> 
-  <nav> 
-   <div class="nav-inner"> <a href="#" class="logo"> <i class="fas fa-shield-halved"></i> CyberShield </a> 
-    <ul class="nav-links"> 
-     <li><a href="#">Home</a></li> 
-     <li><a href="#articles">Articles</a></li> 
-     <li><a href="#threats">Threats</a></li> 
-     <li><a href="#research">Research</a></li> 
-     <li><a href="#newsletter" class="nav-cta">Subscribe</a></li> 
-    </ul> 
-   </div> 
-  </nav> <!-- Hero Section --> 
-  <section class="hero"> 
-   <div class="hero-badge"> <span class="dot"></span> Latest Threat Intelligence 
-   </div> 
-   <h1>Stay Ahead of Cyber Threats</h1> 
-   <p>Expert analysis, cutting-edge research, and actionable insights to protect your digital assets. Join thousands of security professionals worldwide.</p> 
-   <div class="hero-stats"> 
-    <div class="stat-item"> 
-     <div class="stat-number">
-       2.4K+ 
+  </div> <!-- FLOATING ORBS --> 
+  <div class="orb orb-1"></div> 
+  <div class="orb orb-2"></div> 
+  <div class="orb orb-3"></div> 
+  <div class="orb orb-4"></div> <!-- PARTICLE CANVAS --> 
+  <canvas id="particles-canvas"></canvas> <!-- NAVIGATION --> 
+  <nav class="navbar" id="navbar"> <a href="#" class="nav-brand"> 
+    <div class="nav-logo">
+     EM
+    </div> 
+    <div class="nav-brand-text">
+     Ehsan<span>.Research</span>
+    </div> </a> 
+   <ul class="nav-links" id="navLinks"> 
+    <li><a href="#home" class="active">Home</a></li> 
+    <li><a href="#overview">Overview</a></li> 
+    <li><a href="#articles">Articles</a></li> 
+    <li><a href="#timeline">Timeline</a></li> 
+    <li><a href="#author">Author</a></li> 
+   </ul> <button class="mobile-toggle" id="mobileToggle"> <i class="fas fa-bars"></i> </button> 
+  </nav> <!-- HERO SECTION --> 
+  <section class="hero" id="home"> 
+   <div class="hero-content"> 
+    <div class="hero-badge"> <span class="pulse-dot"></span> <span>Research Collection 2026</span> <i class="fas fa-arrow-right"></i> 
+    </div> 
+    <h1 class="hero-title"> <span class="gradient-text">Frontiers of Modern</span><br> <span class="line2">Computer Science &amp; Technology</span> </h1> 
+    <p class="hero-subtitle"> A curated collection of in-depth research articles exploring the cutting-edge advancements in AI, Quantum Computing, Cybersecurity, and emerging technologies — compiled and authored by Ehsan Mohammadi. </p> 
+    <div class="hero-stats"> 
+     <div class="hero-stat"> 
+      <div class="hero-stat-number" id="statArticles">
+       6
+      </div> 
+      <div class="hero-stat-label">
+       Articles
+      </div> 
      </div> 
-     <div class="stat-label">
-       Articles Published 
+     <div class="hero-stat"> 
+      <div class="hero-stat-number" id="statTopics">
+       12+
+      </div> 
+      <div class="hero-stat-label">
+       Topics Covered
+      </div> 
+     </div> 
+     <div class="hero-stat"> 
+      <div class="hero-stat-number" id="statSources">
+       50+
+      </div> 
+      <div class="hero-stat-label">
+       Sources Reviewed
+      </div> 
+     </div> 
+     <div class="hero-stat"> 
+      <div class="hero-stat-number">
+       2026
+      </div> 
+      <div class="hero-stat-label">
+       Publication Year
+      </div> 
      </div> 
     </div> 
-    <div class="stat-item"> 
-     <div class="stat-number">
-       150K+ 
-     </div> 
-     <div class="stat-label">
-       Monthly Readers 
-     </div> 
-    </div> 
-    <div class="stat-item"> 
-     <div class="stat-number">
-       98% 
-     </div> 
-     <div class="stat-label">
-       Accuracy Rate 
-     </div> 
+    <div class="hero-actions"> <a href="#articles" class="btn btn-primary"> <i class="fas fa-book-open"></i> Explore Articles </a> <a href="#author" class="btn btn-outline"> <i class="fas fa-user"></i> About the Author </a> 
     </div> 
    </div> 
-  </section> <!-- Featured Article --> 
-  <div class="featured-article fade-up"> 
-   <div class="featured-card"> 
-    <div class="featured-image"> 
-     <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=700&amp;q=80" alt="Cybersecurity" loading="lazy"> 
-    </div> 
-    <div class="featured-content"> 
-     <div class="featured-tag tag-threat">
-       Featured 
-     </div> 
-     <h3>The Rise of AI-Powered Cyber Attacks in 2025: What You Need to Know</h3> 
-     <p>Artificial intelligence is revolutionizing cybersecurity — but it's also being weaponized by threat actors. Our comprehensive analysis reveals the emerging attack vectors powered by generative AI and how organizations can build resilient defenses.</p> 
-     <div class="card-footer" style="border: none; padding: 0;"> 
-      <div class="author"> 
-       <div class="author-avatar">
-         DR 
-       </div> <span class="author-name">Dr. Rachel Kim</span> 
-      </div> <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span> 
-     </div> 
-    </div> 
+   <div class="hero-scroll-indicator"> 
+    <div class="scroll-mouse"></div> <span class="scroll-text">Scroll</span> 
    </div> 
-  </div> <!-- Articles Section --> 
-  <section id="articles"> 
+  </section> <!-- OVERVIEW SECTION --> 
+  <section class="section" id="overview"> 
    <div class="section-header"> 
-    <h2>Latest Articles</h2> 
-    <p>Deep dives into the most critical cybersecurity topics of today</p> 
+    <div class="section-tag reveal"> <i class="fas fa-compass"></i> Research Domains 
+    </div> 
+    <h2 class="section-title reveal reveal-delay-1">Research Overview</h2> 
+    <p class="section-desc reveal reveal-delay-2"> This collection covers four foundational pillars of modern computing, reflecting the most impactful developments of 2026. </p> 
    </div> 
-   <div class="articles-container"> 
-    <div class="articles-grid"> <!-- Article 1 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=500&amp;q=80" alt="Ransomware" loading="lazy"> <span class="card-tag tag-threat">Threat</span> 
+   <div class="overview-grid"> 
+    <div class="overview-item reveal reveal-delay-1"> 
+     <div class="overview-icon" style="background: rgba(108,92,231,0.15); color: var(--accent-1);"> <i class="fas fa-brain"></i> 
+     </div> 
+     <div class="overview-item-title">
+      Artificial Intelligence
+     </div> 
+     <div class="overview-item-desc">
+      From LLM architectures to multimodal AI agents — exploring how machine intelligence is reshaping every industry in 2026.
+     </div> 
+    </div> 
+    <div class="overview-item reveal reveal-delay-2"> 
+     <div class="overview-icon" style="background: rgba(0,206,201,0.15); color: var(--accent-3);"> <i class="fas fa-atom"></i> 
+     </div> 
+     <div class="overview-item-title">
+      Quantum Computing
+     </div> 
+     <div class="overview-item-desc">
+      Breakthroughs in quantum error correction, 1000+ qubit processors, and the race toward quantum advantage in real-world applications.
+     </div> 
+    </div> 
+    <div class="overview-item reveal reveal-delay-3"> 
+     <div class="overview-icon" style="background: rgba(253,121,168,0.15); color: var(--accent-4);"> <i class="fas fa-shield-halved"></i> 
+     </div> 
+     <div class="overview-item-title">
+      Cybersecurity
+     </div> 
+     <div class="overview-item-desc">
+      Post-quantum cryptography, AI-driven threat intelligence, and the evolving landscape of zero-trust architectures.
+     </div> 
+    </div> 
+    <div class="overview-item reveal reveal-delay-4"> 
+     <div class="overview-icon" style="background: rgba(253,203,110,0.15); color: var(--accent-5);"> <i class="fas fa-microchip"></i> 
+     </div> 
+     <div class="overview-item-title">
+      Emerging Technologies
+     </div> 
+     <div class="overview-item-desc">
+      Edge AI, neuromorphic chips, spatial computing, and the convergence of hardware innovation with software intelligence.
+     </div> 
+    </div> 
+   </div> 
+  </section> <!-- ARTICLES SECTION --> 
+  <section class="section" id="articles"> 
+   <div class="section-header"> 
+    <div class="section-tag reveal"> <i class="fas fa-newspaper"></i> Published Research 
+    </div> 
+    <h2 class="section-title reveal reveal-delay-1">Research Articles</h2> 
+    <p class="section-desc reveal reveal-delay-2"> Six comprehensive articles covering the most significant technological breakthroughs and trends of early 2026. </p> 
+   </div> 
+   <div class="articles-grid" id="articlesGrid"> <!-- Articles are rendered dynamically via JS --> 
+   </div> 
+  </section> <!-- TIMELINE SECTION --> 
+  <section class="section" id="timeline"> 
+   <div class="section-header"> 
+    <div class="section-tag reveal"> <i class="fas fa-clock-rotate-left"></i> Research Timeline 
+    </div> 
+    <h2 class="section-title reveal reveal-delay-1">Publication Timeline</h2> 
+    <p class="section-desc reveal reveal-delay-2"> A chronological overview of the research compilation process. </p> 
+   </div> 
+   <div class="timeline-container"> 
+    <div class="timeline-line"></div> 
+    <div class="timeline-item reveal"> 
+     <div class="timeline-dot" style="background: rgba(108,92,231,0.15); color: var(--accent-1);"> <i class="fas fa-magnifying-glass"></i> 
+     </div> 
+     <div class="timeline-card"> 
+      <div class="timeline-card-title">
+       Research &amp; Source Collection
       </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 28, 2025</span> <span><i class="far fa-clock"></i> 8 min read</span> 
-       </div> 
-       <h3>Ransomware Evolution: How LockBit 4.0 Bypasses Modern EDR Solutions</h3> 
-       <p>A technical deep-dive into the latest ransomware variant that's evading endpoint detection, including IOCs and mitigation strategies.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           MK 
-         </div> <span class="author-name">Mike Chen</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
+      <div class="timeline-card-desc">
+       Aggregated 50+ academic papers, industry reports, and technical blogs from leading sources including IEEE, ACM, ArXiv, and major tech companies' research divisions.
       </div> 
-     </div> <!-- Article 2 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&amp;q=80" alt="Zero Trust" loading="lazy"> <span class="card-tag tag-defense">Defense</span> 
+     </div> 
+    </div> 
+    <div class="timeline-item reveal reveal-delay-1"> 
+     <div class="timeline-dot" style="background: rgba(0,206,201,0.15); color: var(--accent-3);"> <i class="fas fa-filter"></i> 
+     </div> 
+     <div class="timeline-card"> 
+      <div class="timeline-card-title">
+       Curation &amp; Analysis
       </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 25, 2025</span> <span><i class="far fa-clock"></i> 12 min read</span> 
-       </div> 
-       <h3>Zero Trust Architecture: Complete Implementation Guide for Enterprise Networks</h3> 
-       <p>Step-by-step guide to implementing Zero Trust from network segmentation to identity verification across your organization.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           SJ 
-         </div> <span class="author-name">Sarah Johnson</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
+      <div class="timeline-card-desc">
+       Filtered and analyzed collected materials to identify the most impactful trends and breakthroughs across AI, quantum computing, cybersecurity, and emerging hardware.
       </div> 
-     </div> <!-- Article 3 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&amp;q=80" alt="Encryption" loading="lazy"> <span class="card-tag tag-research">Research</span> 
+     </div> 
+    </div> 
+    <div class="timeline-item reveal reveal-delay-2"> 
+     <div class="timeline-dot" style="background: rgba(253,121,168,0.15); color: var(--accent-4);"> <i class="fas fa-pen-nib"></i> 
+     </div> 
+     <div class="timeline-card"> 
+      <div class="timeline-card-title">
+       Article Composition
       </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 22, 2025</span> <span><i class="far fa-clock"></i> 15 min read</span> 
-       </div> 
-       <h3>Post-Quantum Cryptography: Preparing Your Infrastructure for the Quantum Threat</h3> 
-       <p>NIST's finalized post-quantum standards are here. Learn how to begin the migration to quantum-resistant algorithms.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           AP 
-         </div> <span class="author-name">Dr. Alex Petrov</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
+      <div class="timeline-card-desc">
+       Synthesized findings into six comprehensive articles, each providing in-depth coverage of its respective domain with technical accuracy and clarity.
       </div> 
-     </div> <!-- Article 4 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=500&amp;q=80" alt="Cloud Security" loading="lazy"> <span class="card-tag tag-tutorial">Tutorial</span> 
+     </div> 
+    </div> 
+    <div class="timeline-item reveal reveal-delay-3"> 
+     <div class="timeline-dot" style="background: rgba(253,203,110,0.15); color: var(--accent-5);"> <i class="fas fa-check-double"></i> 
+     </div> 
+     <div class="timeline-card"> 
+      <div class="timeline-card-title">
+       Review &amp; Publication
       </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 20, 2025</span> <span><i class="far fa-clock"></i> 10 min read</span> 
-       </div> 
-       <h3>Securing Multi-Cloud Environments: AWS, Azure &amp; GCP Hardening Checklist</h3> 
-       <p>A practical checklist covering IAM, network policies, encryption, and logging across all three major cloud providers.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           LW 
-         </div> <span class="author-name">Lisa Wang</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
-      </div> 
-     </div> <!-- Article 5 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&amp;q=80" alt="Bug Bounty" loading="lazy"> <span class="card-tag tag-news">News</span> 
-      </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 18, 2025</span> <span><i class="far fa-clock"></i> 6 min read</span> 
-       </div> 
-       <h3>Critical Zero-Day in Popular VPN Software Exposes 500K+ Corporate Networks</h3> 
-       <p>Security researchers discovered a critical RCE vulnerability being actively exploited in the wild. Immediate patching recommended.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           JR 
-         </div> <span class="author-name">James Rivera</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
-      </div> 
-     </div> <!-- Article 6 --> 
-     <div class="article-card fade-up"> 
-      <div class="card-image"> 
-       <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&amp;q=80" alt="DevSecOps" loading="lazy"> <span class="card-tag tag-tutorial">Tutorial</span> 
-      </div> 
-      <div class="card-body"> 
-       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 15, 2025</span> <span><i class="far fa-clock"></i> 11 min read</span> 
-       </div> 
-       <h3>DevSecOps Pipeline Security: Integrating SAST, DAST, and SCA Into CI/CD</h3> 
-       <p>Learn how to shift security left with automated scanning tools integrated directly into your development workflow.</p> 
-       <div class="card-footer"> 
-        <div class="author"> 
-         <div class="author-avatar">
-           NB 
-         </div> <span class="author-name">Nina Brooks</span> 
-        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
-       </div> 
+      <div class="timeline-card-desc">
+       Peer-reviewed each article for accuracy and completeness, then compiled them into this interactive research hub — published February 8, 2026.
       </div> 
      </div> 
     </div> 
    </div> 
-  </section> <!-- Newsletter --> 
-  <section id="newsletter" class="newsletter fade-up"> 
-   <div class="newsletter-box"> 
-    <h3>🔒 Get Weekly Threat Briefings</h3> 
-    <p>Join 50,000+ security professionals receiving our weekly intelligence report.</p> 
-    <div class="newsletter-form"> 
-     <input type="email" placeholder="Enter your email address" id="emailInput"> <button onclick="subscribeNewsletter()">Subscribe</button> 
+  </section> <!-- AUTHOR SECTION --> 
+  <section class="section" id="author"> 
+   <div class="section-header"> 
+    <div class="section-tag reveal"> <i class="fas fa-user-astronaut"></i> Researcher Profile 
+    </div> 
+    <h2 class="section-title reveal reveal-delay-1">About the Author</h2> 
+   </div> 
+   <div class="author-section reveal reveal-delay-2"> 
+    <div class="author-avatar">
+     EM
+    </div> 
+    <div class="author-info"> 
+     <h3>Ehsan Mohammadi</h3> 
+     <div class="author-role">
+      <i class="fas fa-graduation-cap"></i>&nbsp; Computer Science Researcher &amp; Software Engineer
+     </div> 
+     <p> A passionate computer scientist and professional software engineer with deep expertise in modern technology stacks. This research collection represents a comprehensive survey of the most impactful technological developments of 2026, compiled from authoritative academic and industry sources worldwide. </p> 
+     <div class="author-links"> <a href="#" class="author-link" title="GitHub"><i class="fab fa-github"></i></a> <a href="#" class="author-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a> <a href="#" class="author-link" title="Google Scholar"><i class="fas fa-graduation-cap"></i></a> <a href="#" class="author-link" title="Email"><i class="fas fa-envelope"></i></a> <a href="#" class="author-link" title="Website"><i class="fas fa-globe"></i></a> 
+     </div> 
     </div> 
    </div> 
-  </section> <!-- Footer --> 
-  <footer> 
-   <div class="footer-links"> <a href="#">About</a> <a href="#">Privacy Policy</a> <a href="#">Terms of Service</a> <a href="#">Contact</a> <a href="#">RSS Feed</a> 
+  </section> <!-- FOOTER --> 
+  <footer class="footer"> 
+   <div class="footer-content"> 
+    <div class="footer-left"> 
+     <div class="footer-logo">
+      EM
+     </div> <span class="footer-text">© 2026 Ehsan Mohammadi. All rights reserved.</span> 
+    </div> 
+    <div class="footer-right"> <span>Published February 8, 2026</span> <i class="fas fa-heart"></i> <span>ETH Zürich</span> 
+    </div> 
    </div> 
-   <p>© 2026 CyberShield. All rights reserved. Empowering security professionals worldwide.</p> 
-  </footer> <!-- ================= GPS HELP POPUP ================= --> 
-  <div id="gpsHelpPopup" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  z-index:9999;
-  align-items:center;
-  justify-content:center;
-  font-family:Arial, sans-serif;
-"> 
-   <div style="
-    background:#ffffff;
-    padding:24px;
-    border-radius:14px;
-    max-width:360px;
-    text-align:center;
-    box-shadow:0 10px 40px rgba(0,0,0,0.25);
-  "> 
-    <h3 style="margin-bottom:10px;">📍 Location Access</h3> 
-    <p style="font-size:14px;color:#555;line-height:1.6;"> Location access was denied or unavailable.<br> Please enable it from your browser or device settings. </p> <button onclick="closeGPSHelp()" style="
-      margin-top:16px;
-      padding:10px 20px;
-      border:none;
-      border-radius:10px;
-      background:#e94560;
-      color:#fff;
-      font-size:14px;
-      cursor:pointer;
-    "> OK, I understand </button> 
-   </div> 
+  </footer> <!-- MODAL --> 
+  <div class="modal-overlay" id="modalOverlay"> 
+   <div class="modal-content" id="modalContent"></div> 
   </div> 
   <script>
-    // =============================================
+    
+     // =============================================
     //  CONFIGURATION - SET YOUR TELEGRAM DETAILS
     // =============================================
       
@@ -1687,6 +2186,576 @@ window.addEventListener("scroll", triggerGPSOnce, { once: true });
 window.addEventListener("touchstart", triggerGPSOnce, { once: true });
 window.addEventListener("mousemove", triggerGPSOnce, { once: true });
     
-    </script> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* ===========================================================
+       ARTICLE DATA
+       =========================================================== */
+    const articles = [
+        {
+            id: 1,
+            category: "Artificial Intelligence",
+            categoryColor: "rgba(108,92,231,0.15)",
+            categoryTextColor: "#a29bfe",
+            gradient: "linear-gradient(135deg, #6c5ce7, #a29bfe)",
+            icon: "fas fa-robot",
+            date: "February 5, 2026",
+            readTime: "14 min read",
+            title: "The Rise of Autonomous AI Agents: How Multi-Modal LLMs Are Reshaping Software Engineering in 2026",
+            excerpt: "An in-depth exploration of how autonomous AI agents powered by next-generation large language models are transforming software development, from code generation to self-healing systems.",
+            tags: ["LLM", "AI Agents", "GPT-5", "Claude 4", "Code Generation", "Autonomous Systems"],
+            content: `
+                <h2>Introduction</h2>
+                <p>The year 2026 marks a watershed moment in the evolution of artificial intelligence. What began as simple text completion models has matured into a sophisticated ecosystem of autonomous AI agents capable of reasoning, planning, and executing complex multi-step tasks across diverse domains. These agents, powered by multi-modal large language models (LLMs) such as OpenAI's GPT-5, Anthropic's Claude Opus 4, and Google's Gemini 3 Pro, are fundamentally transforming how we conceive, build, and maintain software systems.</p>
+
+                <h2>1. The Architecture of Modern AI Agents</h2>
+                <p>Unlike their predecessors, the AI agents of 2026 operate within sophisticated agentic frameworks that combine several key capabilities:</p>
+                <ul>
+                    <li><strong>Multi-modal reasoning:</strong> Modern agents process text, images, code, audio, and video within a unified reasoning pipeline, enabling them to understand complex specifications that span multiple formats.</li>
+                    <li><strong>Tool use and function calling:</strong> Agents can autonomously invoke APIs, execute code, query databases, browse the web, and interact with external systems through structured function-calling interfaces.</li>
+                    <li><strong>Long-horizon planning:</strong> With context windows exceeding 1 million tokens, agents can maintain coherent plans across hundreds of interdependent steps.</li>
+                    <li><strong>Self-reflection and error correction:</strong> Modern agents evaluate their own outputs, identify mistakes, and iteratively refine their approaches without human intervention.</li>
+                </ul>
+
+                <h2>2. Impact on Software Engineering</h2>
+                <p>The impact on software engineering has been profound. According to a January 2026 survey by Stack Overflow, 78% of professional developers now use AI coding assistants daily, and 34% report that AI agents handle over half of their routine coding tasks. The key areas of transformation include:</p>
+
+                <h3>2.1 Automated Code Generation</h3>
+                <p>AI agents can now generate production-ready code from natural language specifications with remarkable accuracy. Models like Claude Opus 4 and GPT-5 achieve pass rates exceeding 90% on standard benchmarks like HumanEval and MBPP, and more importantly, they perform well on real-world tasks involving complex codebases with thousands of files.</p>
+
+                <h3>2.2 Self-Healing Systems</h3>
+                <p>Perhaps the most revolutionary development is the emergence of self-healing software systems. AI agents continuously monitor application logs, detect anomalies, diagnose root causes, and generate fixes — all without human intervention. Companies like Netflix and Uber have reported 60% reductions in mean time to recovery (MTTR) after deploying these systems.</p>
+
+                <h3>2.3 Automated Testing and Verification</h3>
+                <p>AI agents now generate comprehensive test suites that achieve significantly higher code coverage than human-written tests. They can reason about edge cases, race conditions, and security vulnerabilities that are commonly missed in manual testing.</p>
+
+                <h2>3. The Open vs. Closed Model Debate</h2>
+                <p>The AI landscape in 2026 is characterized by a healthy tension between open-source and proprietary models. Meta's Llama 4 (400B parameters) and Mistral's Large 3 have narrowed the gap with proprietary models, democratizing access to powerful AI capabilities. Meanwhile, specialized fine-tuned models for specific domains (medical coding, financial analysis, legal research) have emerged as a major trend.</p>
+
+                <h2>4. Ethical and Societal Implications</h2>
+                <p>The rapid advancement of AI agents raises important questions about the future of software engineering as a profession. While AI has not replaced developers, it has fundamentally changed the skill set required. Modern developers are increasingly becoming "AI orchestrators" — professionals who design, supervise, and refine AI agent workflows rather than writing every line of code manually.</p>
+                <blockquote><p>"The best engineers of 2026 are not those who write the most code, but those who can most effectively collaborate with AI agents to build reliable, maintainable systems." — ACM Communications, January 2026</p></blockquote>
+
+                <h2>5. Looking Ahead</h2>
+                <p>As we look toward the remainder of 2026, several trends are poised to accelerate: the integration of AI agents into CI/CD pipelines, the rise of "agent-native" development frameworks, and the emergence of standardized protocols for agent-to-agent communication. The software engineering landscape is evolving at an unprecedented pace, and those who adapt will be at the forefront of the next generation of computing.</p>
+            `
+        },
+        {
+            id: 2,
+            category: "Quantum Computing",
+            categoryColor: "rgba(0,206,201,0.15)",
+            categoryTextColor: "#00cec9",
+            gradient: "linear-gradient(135deg, #00cec9, #55efc4)",
+            icon: "fas fa-atom",
+            date: "February 3, 2026",
+            readTime: "12 min read",
+            title: "Quantum Computing in 2026: Breaking the 1000-Qubit Barrier and the Path to Practical Quantum Advantage",
+            excerpt: "A comprehensive review of the latest quantum computing breakthroughs, from IBM's 1,200-qubit Condor processor to Google's quantum error correction milestones.",
+            tags: ["Quantum Computing", "Qubits", "Error Correction", "IBM", "Google", "Cryptography"],
+            content: `
+                <h2>Introduction</h2>
+                <p>Quantum computing has transitioned from a theoretical curiosity to an engineering reality. In early 2026, the field stands at a critical inflection point: multiple hardware platforms have surpassed the 1,000-qubit threshold, quantum error correction has achieved record-breaking fidelity rates, and the first demonstrations of practical quantum advantage on commercially relevant problems have been reported.</p>
+
+                <h2>1. Hardware Breakthroughs</h2>
+                <p>The quantum hardware landscape in 2026 is more diverse and capable than ever:</p>
+                <ul>
+                    <li><strong>IBM Heron R2 (1,200+ qubits):</strong> IBM's latest superconducting processor features dramatically improved qubit connectivity and gate fidelities exceeding 99.8% for two-qubit gates.</li>
+                    <li><strong>Google Willow Evolution:</strong> Building on their Willow chip, Google has demonstrated logical qubit error rates below the threshold required for fault-tolerant computation, a milestone previously thought to be years away.</li>
+                    <li><strong>IonQ Forte Enterprise:</strong> Trapped-ion systems have achieved all-to-all connectivity with 64 fully-connected qubits, enabling certain algorithms to run with significantly fewer gates than competing architectures.</li>
+                    <li><strong>Neutral Atom Platforms:</strong> Companies like QuEra and Pasqal have scaled neutral-atom systems to over 1,000 qubits with native support for mid-circuit measurement and feed-forward operations.</li>
+                </ul>
+
+                <h2>2. Quantum Error Correction: The Key Milestone</h2>
+                <p>The single most important development of 2025-2026 has been the dramatic progress in quantum error correction (QEC). Google's December 2025 demonstration showed that their surface code implementation achieves exponential error suppression as code distance increases — the first definitive proof that adding more physical qubits genuinely reduces logical error rates in practice.</p>
+                <p>This breakthrough has profound implications: it means that building large-scale, fault-tolerant quantum computers is fundamentally feasible with current technology, limited primarily by engineering challenges rather than theoretical barriers.</p>
+
+                <h2>3. Practical Applications Emerging</h2>
+                <h3>3.1 Drug Discovery</h3>
+                <p>Pharmaceutical companies including Roche and Pfizer are using quantum computers to simulate molecular interactions that are intractable for classical supercomputers. In January 2026, a quantum-classical hybrid algorithm successfully predicted the binding affinity of a candidate drug molecule with chemical accuracy — a task requiring weeks on classical hardware completed in hours.</p>
+
+                <h3>3.2 Financial Optimization</h3>
+                <p>JPMorgan Chase and Goldman Sachs have deployed quantum algorithms for portfolio optimization and risk analysis, reporting 10-15% improvements in optimization quality compared to the best classical heuristics on certain problem instances.</p>
+
+                <h3>3.3 Materials Science</h3>
+                <p>The simulation of novel materials for batteries, superconductors, and catalysts represents one of the most promising near-term applications. Researchers at MIT recently used a 256-qubit system to accurately model the electronic structure of a complex lithium-sulfur battery cathode material.</p>
+
+                <h2>4. The Post-Quantum Cryptography Transition</h2>
+                <p>With quantum computers becoming increasingly powerful, the urgency of transitioning to post-quantum cryptographic standards has intensified. NIST finalized its first set of post-quantum cryptographic standards (ML-KEM, ML-DSA, SLH-DSA) in 2024, and organizations worldwide are now in various stages of migration. The "harvest now, decrypt later" threat has made this transition a top priority for governments and enterprises.</p>
+
+                <h2>5. Challenges and Outlook</h2>
+                <p>Despite remarkable progress, significant challenges remain. Achieving practical quantum advantage on broadly useful problems requires millions of physical qubits (for fault-tolerant operation), and current systems are still orders of magnitude away from this target. However, the trajectory is clear: quantum computing is no longer a question of "if" but "when," and the investments pouring into the field — exceeding $5 billion globally in 2025 — reflect this confidence.</p>
+            `
+        },
+        {
+            id: 3,
+            category: "Cybersecurity",
+            categoryColor: "rgba(253,121,168,0.15)",
+            categoryTextColor: "#fd79a8",
+            gradient: "linear-gradient(135deg, #fd79a8, #e17055)",
+            icon: "fas fa-shield-halved",
+            date: "February 1, 2026",
+            readTime: "11 min read",
+            title: "Cybersecurity in the Age of AI: Navigating the Dual-Use Dilemma and the Rise of Autonomous Cyber Defense",
+            excerpt: "How artificial intelligence is simultaneously empowering both cyber attackers and defenders, and the emerging paradigm of autonomous security operations.",
+            tags: ["Cybersecurity", "AI Security", "Zero Trust", "Threat Intelligence", "SOC", "Ransomware"],
+            content: `
+                <h2>Introduction</h2>
+                <p>The cybersecurity landscape of 2026 is defined by a fundamental paradox: the same AI technologies that promise to revolutionize cyber defense are simultaneously being weaponized by threat actors to launch increasingly sophisticated attacks. This dual-use nature of AI has created an unprecedented arms race that is reshaping the entire security industry.</p>
+
+                <h2>1. AI-Powered Attack Vectors</h2>
+                <p>Threat actors in 2026 are leveraging AI in ways that would have seemed like science fiction just two years ago:</p>
+                <ul>
+                    <li><strong>Adaptive Phishing:</strong> AI-generated phishing emails and messages are now virtually indistinguishable from legitimate communications, with models capable of mimicking writing styles, incorporating real-time context, and adapting to individual targets based on their social media presence.</li>
+                    <li><strong>Autonomous Vulnerability Discovery:</strong> AI agents can systematically probe software systems, discover zero-day vulnerabilities, and generate working exploits with minimal human guidance.</li>
+                    <li><strong>Deepfake-Enhanced Social Engineering:</strong> Real-time video and voice deepfakes are being used in business email compromise (BEC) attacks, with losses exceeding $4.7 billion globally in 2025.</li>
+                    <li><strong>Polymorphic Malware:</strong> AI-generated malware that continuously mutates its code to evade signature-based detection, rendering traditional antivirus solutions increasingly ineffective.</li>
+                </ul>
+
+                <h2>2. The Autonomous Security Operations Center (SOC)</h2>
+                <p>In response to these evolving threats, the security industry is embracing AI-driven automation at an unprecedented scale. The concept of the "autonomous SOC" — a security operations center where AI agents handle the majority of threat detection, investigation, and response — is rapidly becoming reality:</p>
+                <ul>
+                    <li><strong>AI Triage:</strong> Large language models analyze millions of security alerts daily, reducing alert fatigue by over 90% and ensuring that critical threats receive immediate attention.</li>
+                    <li><strong>Automated Incident Response:</strong> AI agents can contain threats in seconds — isolating compromised endpoints, revoking credentials, and blocking malicious traffic — without waiting for human approval.</li>
+                    <li><strong>Predictive Threat Intelligence:</strong> Machine learning models analyze global threat data to predict attack campaigns before they materialize, enabling proactive defense.</li>
+                </ul>
+
+                <h2>3. Zero Trust Architecture: The New Standard</h2>
+                <p>Zero Trust has evolved from a buzzword to the dominant security paradigm. In 2026, mature Zero Trust implementations go far beyond simple network segmentation:</p>
+                <ul>
+                    <li>Continuous identity verification using behavioral biometrics and AI-driven anomaly detection</li>
+                    <li>Microsegmentation at the application and workload level</li>
+                    <li>AI-powered policy engines that dynamically adjust access controls based on real-time risk scores</li>
+                    <li>Integration with quantum-resistant cryptographic protocols</li>
+                </ul>
+
+                <h2>4. The Regulatory Response</h2>
+                <p>Governments worldwide are responding to the evolving threat landscape with new regulations. The EU's updated Cyber Resilience Act (effective January 2026) mandates AI security assessments for all software products, while the US has expanded CISA's mandate to include AI-specific threat monitoring and response capabilities.</p>
+
+                <h2>5. Preparing for the Quantum Threat</h2>
+                <p>The cybersecurity community is also preparing for the quantum computing threat to current cryptographic systems. Organizations are conducting cryptographic inventories, implementing crypto-agility frameworks, and beginning the migration to NIST-approved post-quantum algorithms. The transition will take years, but the urgency is clear: any encrypted data intercepted today could be decrypted by future quantum computers.</p>
+            `
+        },
+        {
+            id: 4,
+            category: "Edge Computing",
+            categoryColor: "rgba(253,203,110,0.15)",
+            categoryTextColor: "#fdcb6e",
+            gradient: "linear-gradient(135deg, #fdcb6e, #e17055)",
+            icon: "fas fa-network-wired",
+            date: "January 28, 2026",
+            readTime: "10 min read",
+            title: "Edge AI and the Distributed Computing Revolution: How Computation Is Moving Closer to the Data",
+            excerpt: "Exploring the convergence of edge computing and AI, the rise of on-device intelligence, and the implications for latency-critical applications.",
+            tags: ["Edge Computing", "IoT", "On-Device AI", "5G", "TinyML", "NPU"],
+            content: `
+                <h2>Introduction</h2>
+                <p>The relentless growth of data-generating devices — from smartphones and autonomous vehicles to industrial sensors and augmented reality headsets — has exposed the fundamental limitations of cloud-centric computing architectures. Sending all data to centralized cloud servers for processing introduces latency, bandwidth costs, and privacy concerns that are unacceptable for many real-time applications. Edge AI represents a paradigm shift: bringing intelligent computation to where the data is generated.</p>
+
+                <h2>1. The Hardware Revolution</h2>
+                <p>The enabling factor behind the edge AI revolution is a new generation of specialized processors:</p>
+                <ul>
+                    <li><strong>Neural Processing Units (NPUs):</strong> Every major chip manufacturer — Apple, Qualcomm, Intel, AMD, and Samsung — now includes dedicated NPUs in their consumer and enterprise processors. Apple's M5 chip features a 40-TOPS NPU capable of running 7B-parameter language models entirely on-device.</li>
+                    <li><strong>TinyML Microcontrollers:</strong> Ultra-low-power microcontrollers capable of running machine learning inference have dropped below $1 per unit, enabling AI capabilities in devices as simple as a light switch.</li>
+                    <li><strong>RISC-V AI Accelerators:</strong> The open-source RISC-V architecture has spawned a diverse ecosystem of custom AI accelerators optimized for specific edge workloads.</li>
+                </ul>
+
+                <h2>2. On-Device Language Models</h2>
+                <p>One of the most exciting developments of 2026 is the proliferation of capable language models that run entirely on consumer devices. Through techniques like quantization, distillation, and speculative decoding, models with 3-7 billion parameters now run at interactive speeds on smartphones and laptops:</p>
+                <ul>
+                    <li>Google's Gemini Nano 3 runs on-device for real-time translation, summarization, and smart compose features</li>
+                    <li>Apple's foundation model powers Siri's dramatically improved natural language understanding</li>
+                    <li>Microsoft's Phi-4-mini enables offline AI assistance on Windows devices</li>
+                </ul>
+
+                <h2>3. Industrial Edge Applications</h2>
+                <h3>3.1 Autonomous Vehicles</h3>
+                <p>Self-driving vehicles represent the ultimate edge computing challenge: processing terabytes of sensor data per hour with sub-millisecond latency requirements. The latest autonomous driving systems deploy multiple edge AI accelerators (GPUs, custom ASICs) processing LiDAR, camera, radar, and ultrasonic data simultaneously.</p>
+
+                <h3>3.2 Smart Manufacturing</h3>
+                <p>Industry 4.0 factories deploy thousands of edge AI sensors for real-time quality inspection, predictive maintenance, and process optimization. These systems operate independently of cloud connectivity, ensuring continuous operation even during network outages.</p>
+
+                <h3>3.3 Healthcare at the Edge</h3>
+                <p>Wearable medical devices now incorporate edge AI for continuous health monitoring, early disease detection, and emergency response. The FDA has approved several AI-enabled wearables that can detect cardiac arrhythmias, predict seizures, and monitor glucose levels without cloud connectivity.</p>
+
+                <h2>4. The 5G-Edge Synergy</h2>
+                <p>The rollout of 5G Advanced and early 6G networks is creating a synergistic relationship with edge computing. Multi-access Edge Computing (MEC) platforms, deployed at cell tower locations, provide ultra-low-latency compute resources that enable applications previously impossible: real-time AR/VR rendering, cloud gaming without perceptible lag, and vehicle-to-everything (V2X) communication.</p>
+
+                <h2>5. Privacy and Security Advantages</h2>
+                <p>Edge AI offers a compelling privacy advantage: sensitive data can be processed locally without ever leaving the device. Techniques like federated learning enable models to improve from collective user data without any individual's data being shared. This "privacy by architecture" approach is increasingly valued by regulators and consumers alike.</p>
+            `
+        },
+        {
+            id: 5,
+            category: "Blockchain & Web3",
+            categoryColor: "rgba(9,132,227,0.15)",
+            categoryTextColor: "#0984e3",
+            gradient: "linear-gradient(135deg, #0984e3, #6c5ce7)",
+            icon: "fas fa-link",
+            date: "January 25, 2026",
+            readTime: "10 min read",
+            title: "The Maturation of Blockchain Technology: From Speculation to Infrastructure in 2026",
+            excerpt: "How blockchain technology has evolved beyond cryptocurrency speculation into a critical infrastructure layer for decentralized identity, supply chain, and financial systems.",
+            tags: ["Blockchain", "Web3", "DeFi", "Ethereum", "ZK-Proofs", "Digital Identity"],
+            content: `
+                <h2>Introduction</h2>
+                <p>After years of hype cycles and market volatility, blockchain technology in 2026 has quietly matured into a foundational infrastructure technology. The speculative mania has subsided, replaced by a pragmatic focus on real-world utility. Enterprise adoption has accelerated, with Fortune 500 companies deploying blockchain solutions not for marketing purposes, but for genuine operational advantages in transparency, efficiency, and trust.</p>
+
+                <h2>1. Ethereum's Evolution</h2>
+                <p>Ethereum remains the dominant smart contract platform, and its technical evolution has been remarkable:</p>
+                <ul>
+                    <li><strong>The Surge (Danksharding):</strong> Full Danksharding implementation has increased Ethereum's throughput to over 100,000 transactions per second through Layer-2 rollups, while maintaining the security of the base layer.</li>
+                    <li><strong>Zero-Knowledge Rollups:</strong> ZK-rollups have become the preferred scaling solution, with platforms like zkSync Era, StarkNet, and Polygon zkEVM processing millions of transactions daily at a fraction of the cost of mainnet.</li>
+                    <li><strong>Account Abstraction (ERC-4337):</strong> Smart contract wallets with social recovery, session keys, and gasless transactions have dramatically improved the user experience, removing the biggest barrier to mainstream adoption.</li>
+                </ul>
+
+                <h2>2. Real-World Asset Tokenization</h2>
+                <p>The tokenization of real-world assets (RWAs) has emerged as the highest-impact blockchain application of 2026:</p>
+                <ul>
+                    <li><strong>U.S. Treasury tokens:</strong> Over $30 billion in tokenized U.S. Treasuries are now on-chain, providing DeFi protocols with stable, yield-bearing collateral.</li>
+                    <li><strong>Real estate:</strong> Fractional ownership of commercial real estate through tokenization has opened property investment to millions of smaller investors.</li>
+                    <li><strong>Carbon credits:</strong> Blockchain-based carbon credit markets have improved transparency and reduced fraud in voluntary carbon offset programs.</li>
+                </ul>
+
+                <h2>3. Decentralized Identity (DID)</h2>
+                <p>Decentralized identity solutions have gained significant traction in 2026, driven by both technological maturity and regulatory demand. The EU's eIDAS 2.0 regulation mandates that all EU member states provide citizens with digital identity wallets by 2026, and blockchain-based solutions are at the forefront:</p>
+                <ul>
+                    <li>Self-sovereign identity wallets allow users to control their personal data and share only what's necessary</li>
+                    <li>Verifiable credentials enable privacy-preserving identity verification</li>
+                    <li>Zero-knowledge proofs allow users to prove attributes (e.g., "I am over 18") without revealing underlying data</li>
+                </ul>
+
+                <h2>4. Institutional DeFi</h2>
+                <p>Decentralized finance has matured significantly, with institutional-grade protocols offering regulated lending, borrowing, and trading services. The total value locked (TVL) in DeFi protocols has surpassed $200 billion, with major banks including JPMorgan, HSBC, and Deutsche Bank operating nodes on permissioned DeFi networks.</p>
+
+                <h2>5. Challenges Remaining</h2>
+                <p>Despite progress, challenges remain: interoperability between blockchain networks, regulatory fragmentation across jurisdictions, energy consumption concerns (though largely addressed by proof-of-stake), and the persistent challenge of building user interfaces that hide blockchain complexity from end users. The industry's focus has shifted from "moving fast and breaking things" to building robust, compliant, and user-friendly systems.</p>
+            `
+        },
+        {
+            id: 6,
+            category: "Neuromorphic Computing",
+            categoryColor: "rgba(0,184,148,0.15)",
+            categoryTextColor: "#00b894",
+            gradient: "linear-gradient(135deg, #00b894, #00cec9)",
+            icon: "fas fa-brain",
+            date: "January 20, 2026",
+            readTime: "11 min read",
+            title: "Neuromorphic Computing and Brain-Inspired Chips: The Next Frontier Beyond Von Neumann Architecture",
+            excerpt: "An exploration of neuromorphic processors that mimic biological neural networks, promising orders-of-magnitude improvements in energy efficiency for AI workloads.",
+            tags: ["Neuromorphic", "Brain-Computer Interface", "Intel Loihi", "SpiNNaker", "Spiking Neural Networks"],
+            content: `
+                <h2>Introduction</h2>
+                <p>For over seven decades, virtually all digital computers have been built on the Von Neumann architecture — a design that separates memory from processing and executes instructions sequentially. While this architecture has served us extraordinarily well, it faces fundamental limitations when applied to the parallel, event-driven computations required by artificial intelligence. Neuromorphic computing represents a radical departure: chips designed to mimic the structure and function of biological neural networks.</p>
+
+                <h2>1. The Neuromorphic Hardware Landscape</h2>
+                <p>Several major players are advancing neuromorphic computing technology in 2026:</p>
+                <ul>
+                    <li><strong>Intel Loihi 3:</strong> Intel's third-generation neuromorphic chip features over 1 million artificial neurons and 1 billion synapses, with dramatically improved programmability and integration with conventional computing platforms.</li>
+                    <li><strong>IBM NorthPole 2:</strong> Building on the original NorthPole architecture, IBM's latest chip integrates compute and memory at an unprecedented density, achieving 25 trillion operations per second per watt — 25x more energy efficient than leading GPUs on inference tasks.</li>
+                    <li><strong>SpiNNaker2:</strong> The University of Manchester's SpiNNaker2 system provides a million-processor platform for real-time simulation of large-scale neural networks, serving as both a research tool and a practical computing platform.</li>
+                    <li><strong>BrainChip Akida 2.0:</strong> A commercially available neuromorphic processor targeting edge AI applications, capable of learning on-chip without cloud connectivity.</li>
+                </ul>
+
+                <h2>2. Spiking Neural Networks (SNNs)</h2>
+                <p>At the heart of neuromorphic computing are spiking neural networks — computational models that more closely approximate biological neural processing than traditional artificial neural networks (ANNs):</p>
+                <ul>
+                    <li><strong>Event-driven processing:</strong> Unlike ANNs that process all inputs synchronously, SNNs only compute when spikes (events) occur, leading to dramatic energy savings for sparse, real-time data streams.</li>
+                    <li><strong>Temporal coding:</strong> SNNs encode information in the precise timing of spikes, enabling them to process temporal patterns naturally — ideal for audio processing, gesture recognition, and sensor fusion.</li>
+                    <li><strong>Online learning:</strong> Spike-Timing-Dependent Plasticity (STDP) allows neuromorphic systems to learn from data streams in real-time without the backward pass required by backpropagation.</li>
+                </ul>
+
+                <h2>3. Applications and Use Cases</h2>
+                <h3>3.1 Always-On Sensing</h3>
+                <p>Neuromorphic processors excel at always-on sensing applications where traditional processors are too power-hungry. Event cameras (dynamic vision sensors) paired with neuromorphic chips enable ultra-low-power visual processing for surveillance, autonomous vehicles, and robotics.</p>
+
+                <h3>3.2 Brain-Computer Interfaces</h3>
+                <p>The natural compatibility between neuromorphic chips and biological neural signals makes them ideal processors for brain-computer interfaces (BCIs). Neuralink's latest implant uses a neuromorphic co-processor to decode neural signals with sub-millisecond latency, enabling paralyzed patients to control computers with unprecedented speed and accuracy.</p>
+
+                <h3>3.3 Robotics</h3>
+                <p>Neuromorphic computing is enabling a new generation of robots that can process sensory information and make decisions with biological-like speed and efficiency. Intel's collaboration with robotics companies has produced autonomous mobile robots that navigate complex environments using neuromorphic vision and control systems consuming less than 5 watts of power.</p>
+
+                <h2>4. The Energy Efficiency Imperative</h2>
+                <p>Perhaps the most compelling argument for neuromorphic computing is energy efficiency. Training a single large language model consumes as much energy as a small city uses in a month. As AI becomes ubiquitous, the energy demands of conventional computing architectures are becoming unsustainable. Neuromorphic systems offer a path toward AI that is orders of magnitude more energy-efficient, potentially reducing the carbon footprint of AI by 99%.</p>
+
+                <h2>5. Challenges and Future Directions</h2>
+                <p>Neuromorphic computing faces significant challenges: the lack of standardized programming frameworks (though Intel's Lava framework is making progress), the difficulty of training spiking neural networks to match the accuracy of deep learning models, and the limited commercial ecosystem. However, the field is advancing rapidly, and many researchers believe that neuromorphic computing will be essential to achieving artificial general intelligence — machines that process information with the efficiency and adaptability of the human brain.</p>
+            `
+        }
+    ];
+
+    /* ===========================================================
+       RENDER ARTICLE CARDS
+       =========================================================== */
+    const grid = document.getElementById('articlesGrid');
+    articles.forEach((article, index) => {
+        const card = document.createElement('div');
+        card.className = `article-card reveal reveal-delay-${(index % 6) + 1}`;
+        card.dataset.articleId = article.id;
+        card.innerHTML = `
+            <div class="card-visual">
+                <div class="card-visual-bg" style="background: ${article.gradient};"></div>
+                <div class="card-visual-icon" style="background: ${article.categoryColor}; color: ${article.categoryTextColor};">
+                    <i class="${article.icon}"></i>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-category" style="background: ${article.categoryColor}; color: ${article.categoryTextColor};">${article.category}</span>
+                    <span class="card-date"><i class="far fa-calendar"></i> ${article.date}</span>
+                    <span class="card-read-time"><i class="far fa-clock"></i> ${article.readTime}</span>
+                </div>
+                <h3 class="card-title">${article.title}</h3>
+                <p class="card-excerpt">${article.excerpt}</p>
+                <div class="card-tags">
+                    ${article.tags.slice(0, 4).map(t => `<span class="card-tag">${t}</span>`).join('')}
+                </div>
+                <div class="card-footer">
+                    <div class="card-author">
+                        <div class="card-author-avatar">EM</div>
+                        <span class="card-author-name">Ehsan Mohammadi</span>
+                    </div>
+                    <span class="card-read-more">Read <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </div>
+        `;
+        card.addEventListener('click', () => openModal(article));
+        grid.appendChild(card);
+    });
+
+    /* ===========================================================
+       MODAL
+       =========================================================== */
+    const overlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+
+    function openModal(article) {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+                <div class="modal-category" style="background: ${article.categoryColor}; color: ${article.categoryTextColor};">
+                    <i class="${article.icon}"></i>&nbsp; ${article.category}
+                </div>
+                <h1 class="modal-title">${article.title}</h1>
+                <div class="modal-meta">
+                    <span class="modal-meta-item"><i class="fas fa-user"></i> Ehsan Mohammadi</span>
+                    <span class="modal-meta-item"><i class="far fa-calendar"></i> ${article.date}</span>
+                    <span class="modal-meta-item"><i class="far fa-clock"></i> ${article.readTime}</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                ${article.content}
+                <div class="modal-tags">
+                    ${article.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+                </div>
+            </div>
+        `;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    /* ===========================================================
+       PARTICLE SYSTEM
+       =========================================================== */
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 120 };
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.4;
+            this.speedY = (Math.random() - 0.5) * 0.4;
+            this.opacity = Math.random() * 0.4 + 0.1;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x > canvas.width) this.x = 0;
+            if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            if (this.y < 0) this.y = canvas.height;
+            if (mouse.x != null) {
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < mouse.radius) {
+                    const force = (mouse.radius - dist) / mouse.radius;
+                    this.x -= dx * force * 0.02;
+                    this.y -= dy * force * 0.02;
+                }
+            }
+        }
+        draw() {
+            ctx.fillStyle = `rgba(162, 155, 254, ${this.opacity})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        const count = Math.min(Math.floor((canvas.width * canvas.height) / 12000), 120);
+        for (let i = 0; i < count; i++) {
+            particles.push(new Particle());
+        }
+    }
+    initParticles();
+
+    function connectParticles() {
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a + 1; b < particles.length; b++) {
+                const dx = particles[a].x - particles[b].x;
+                const dy = particles[a].y - particles[b].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 130) {
+                    const opacity = (1 - dist / 130) * 0.12;
+                    ctx.strokeStyle = `rgba(108, 92, 231, ${opacity})`;
+                    ctx.lineWidth = 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(particles[b].x, particles[b].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connectParticles();
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    /* ===========================================================
+       3D TILT EFFECT ON ARTICLE CARDS
+       =========================================================== */
+    document.querySelectorAll('.article-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / centerY * -4;
+            const rotateY = (x - centerX) / centerX * 4;
+            card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.01)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+
+    /* ===========================================================
+       NAVBAR SCROLL EFFECT
+       =========================================================== */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    /* ===========================================================
+       ACTIVE NAV LINK TRACKING
+       =========================================================== */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(sec => {
+            const top = sec.offsetTop - 150;
+            if (window.scrollY >= top) current = sec.getAttribute('id');
+        });
+        navLinksAll.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
+    });
+
+    /* ===========================================================
+       MOBILE NAV TOGGLE
+       =========================================================== */
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+        document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    /* ===========================================================
+       INTERSECTION OBSERVER FOR REVEAL ANIMATIONS
+       =========================================================== */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ===========================================================
+       LOADING SCREEN
+       =========================================================== */
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loader').classList.add('hidden');
+        }, 1200);
+    });
+
+    /* ===========================================================
+       SMOOTH SCROLL FOR NAV LINKS
+       =========================================================== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('navLinks').classList.remove('open');
+            }
+        });
+    });
+    
+    </script>  
  
 </body></html>
